@@ -339,13 +339,13 @@
   <header class="cover">
     <span class="chip">🇻🇪 Donación · Venezuela</span>
     <h1>Venezuela nos necesita</h1>
-    <p class="cover-sub">Unidos desde Ecuador, acción inmediata y directa en territorio venezolano</p>
+    <p class="cover-sub">Unidos desde Ecuador</p>
     <div class="org"><span class="av">CK</span> Organizado por Catherine Brett y Katherine Suárez</div>
   </header>
 
   <!-- MENÚ -->
   <nav class="tabs">
-    <button class="tab active" data-view="donar">💚 Donar</button>
+    <button class="tab active" data-view="donar">💙 Donar</button>
     <button class="tab" data-view="evidencia">📸 Tu ayuda en acción</button>
   </nav>
 
@@ -447,7 +447,7 @@
 
       <section class="card" id="instrucciones">
         <h2>Cómo donar</h2>
-        <p class="sub">Transfiere a esta cuenta y tu aporte se suma a la meta. Envíanos tu comprobante para registrarte en la lista 💚</p>
+        <p class="sub">Transfiere a esta cuenta y tu aporte se suma a la meta. Envíanos tu comprobante para registrarte en la lista</p>
 
         <div class="acct">
           <div class="bank-row"><div><div class="k">Banco</div><div class="v" id="b-bank">Banco Guayaquil</div></div>
@@ -485,13 +485,13 @@
   <!-- ===================== VISTA: EVIDENCIA ===================== -->
   <div id="view-evidencia" class="view" style="display:none">
     <section class="card ev-intro">
-      <h2>Tu ayuda, hecha realidad 💚</h2>
+      <h2>Tu ayuda, hecha realidad</h2>
       <p>Aquí ves exactamente en qué se convierte tu aporte: tus compras en Venezuela y las entregas a quienes más lo necesitan. Sin intermediarios, con el corazón y con pruebas.</p>
     </section>
 
     <div class="ev-banner">
       <span class="ic">📅</span>
-      <div>A partir del <b>domingo 28 de junio</b> subiremos aquí toda la información de las primeras compras y entregas. ¡Gracias por tu confianza y tu paciencia! 💚</div>
+      <div>A partir del <b>domingo 28 de junio</b> subiremos aquí toda la información de las primeras compras y entregas. ¡Gracias por tu confianza y tu paciencia! 💙</div>
     </div>
 
     <!-- subir evidencia (solo admins) -->
@@ -531,7 +531,7 @@
     <button class="modal-x" id="modalClose" aria-label="Cerrar">✕</button>
 
     <div id="donateStep">
-      <h2>Haz tu donación 💚</h2>
+      <h2>Haz tu donación</h2>
       <p class="lead">Transfiere a esta cuenta y sube tu comprobante. Así validamos y te sumamos a la lista.</p>
 
       <div class="modal-bank">
@@ -568,7 +568,7 @@
     </div>
 
     <div id="thanksStep" class="thanks" style="display:none">
-      <div class="big">💚</div>
+      <div class="big">💙</div>
       <h2 id="thanksTitle">¡Gracias de todo corazón!</h2>
       <div id="reviewNote" style="display:none">
         <p class="review-lead">No pudimos verificar tu comprobante automáticamente. Para <b>publicar tu donación y sumarla al total</b>, envíanoslo por WhatsApp y lo confirmamos a mano:</p>
@@ -626,7 +626,7 @@
 
   function renderList(){
     const pub=pubDons();
-    if(!pub.length){$("#list").innerHTML='<div class="empty">Aún no hay donaciones registradas.<br>¡Pronto aparecerán aquí en vivo! 💚</div>';return;}
+    if(!pub.length){$("#list").innerHTML='<div class="empty">Aún no hay donaciones registradas.<br>¡Pronto aparecerán aquí en vivo!</div>';return;}
     const a=sorted();
     const recentId=[...pub].sort((x,y)=>y.date-x.date)[0].id;
     const topId=[...pub].sort((x,y)=>y.amount-x.amount)[0].id;
@@ -672,7 +672,7 @@
     const {error}=await sb.from("settings").upsert({key:"goal",value:v});
     $("#goalBtn").disabled=false;
     if(error){console.error(error);toast("No se pudo guardar la meta.");return;}
-    GOAL=v;applyGoal();toast("Meta actualizada 💙");
+    GOAL=v;applyGoal();toast("Meta actualizada");
   });
 
   /* ===== Evidencia (pública) ===== */
@@ -691,11 +691,11 @@
       const u=evUrl(e.file_path),del=(adminOpen&&isAdmin)?`<button class="ev-del" data-id="${e.id}" data-p="${e.file_path}" title="Borrar">✕</button>`:"";
       if(isImg(e.file_path))return `<div class="ev-item">${del}<a href="${u}" target="_blank" rel="noopener"><img src="${u}" alt="factura" loading="lazy"></a><div class="ev-cap">${e.caption||"Factura de compra"}<span class="dd">${fdate(e.created_at)}</span></div></div>`;
       return `<div class="ev-item">${del}<a class="ev-doc" href="${u}" target="_blank" rel="noopener"><span class="ico">🧾</span><span><span class="dt">${e.caption||"Factura de compra"}</span><span class="dd">Ver factura · ${fdate(e.created_at)}</span></span></a></div>`;
-    }).join(""):'<div class="ev-empty">Aún no hay facturas. Pronto subiremos las primeras compras 💚</div>';
+    }).join(""):'<div class="ev-empty">Aún no hay facturas. Pronto subiremos las primeras compras</div>';
     $("#fotoGrid").innerHTML=fotos.length?fotos.map(e=>{
       const u=evUrl(e.file_path),del=(adminOpen&&isAdmin)?`<button class="ev-del" data-id="${e.id}" data-p="${e.file_path}" title="Borrar">✕</button>`:"";
       return `<div class="ev-item">${del}<a href="${u}" target="_blank" rel="noopener"><img src="${u}" alt="entrega" loading="lazy"></a><div class="ev-cap">${e.caption||"Entrega de donativos"}<span class="dd">${fdate(e.created_at)}</span></div></div>`;
-    }).join(""):'<div class="ev-empty">Aún no hay fotos de entregas. Muy pronto verás las primeras 💚</div>';
+    }).join(""):'<div class="ev-empty">Aún no hay fotos de entregas. Muy pronto verás las primeras</div>';
   }
   sb.channel("evidencia-rt").on("postgres_changes",{event:"*",schema:"public",table:"evidencia"},()=>loadEvidencia()).subscribe();
 
@@ -726,7 +726,7 @@
     const del=e.target.closest(".cf-del");
     if(del){if(!confirm("¿Ocultar esta donación de la lista pública?\n\nNo se borra: queda guardada y la puedes restaurar desde «Ver ocultas»."))return;const {error}=await sb.from("donations").update({deleted:true}).eq("id",del.dataset.id);if(error){console.error(error);toast("No se pudo ocultar.");}else{const d=donations.find(x=>x.id===del.dataset.id);if(d)d.deleted=true;render();toast("Donación ocultada");}return;}
     const res=e.target.closest(".cf-restore");
-    if(res){const {error}=await sb.from("donations").update({deleted:false}).eq("id",res.dataset.id);if(error){console.error(error);toast("No se pudo restaurar.");}else{const d=donations.find(x=>x.id===res.dataset.id);if(d)d.deleted=false;render();toast("Donación restaurada 💙");}}
+    if(res){const {error}=await sb.from("donations").update({deleted:false}).eq("id",res.dataset.id);if(error){console.error(error);toast("No se pudo restaurar.");}else{const d=donations.find(x=>x.id===res.dataset.id);if(d)d.deleted=false;render();toast("Donación restaurada");}}
   });
 
   /* ===== Pestañas ===== */
@@ -819,12 +819,12 @@
     $("#sendComprobante").disabled=false;
     if(ins){console.error(ins);msg.textContent="No se pudo registrar. Intenta de nuevo.";msg.classList.add("err");return;}
     $("#reviewNote").style.display=needsReview?"block":"none";
-    $("#thanksTitle").textContent=needsReview?"¡Gracias! Falta un pasito 💚":"¡Gracias de todo corazón!";
+    $("#thanksTitle").textContent=needsReview?"¡Gracias! Falta un pasito":"¡Gracias de todo corazón!";
     $("#donateStep").style.display="none";$("#thanksStep").style.display="block";
   });
 
   /* ===== Compartir ===== */
-  $("#shareBtn").addEventListener("click",()=>{const url=window.location.href;if(navigator.share){navigator.share({title:"Venezuela nos necesita",url}).catch(()=>{});}else{navigator.clipboard?.writeText(url);toast("¡Enlace copiado! 💚");}});
+  $("#shareBtn").addEventListener("click",()=>{const url=window.location.href;if(navigator.share){navigator.share({title:"Venezuela nos necesita",url}).catch(()=>{});}else{navigator.clipboard?.writeText(url);toast("¡Enlace copiado!");}});
 
   /* ===== Admin ===== */
   const at=$("#adminToggle");
@@ -857,7 +857,7 @@
     const {error}=await sb.auth.signInWithPassword({email,password:pass});
     if(error){msg.textContent="Correo o contraseña incorrectos.";return;}
     if(!ADMIN_EMAILS.includes(email)){msg.textContent="Esa cuenta no es de administradora.";await sb.auth.signOut();return;}
-    msg.textContent="";$("#loginPass").value="";toast("Sesión iniciada 💚");
+    msg.textContent="";$("#loginPass").value="";toast("Sesión iniciada");
   });
   $("#logoutBtn").addEventListener("click",async()=>{await sb.auth.signOut();toast("Sesión cerrada");});
 
@@ -873,7 +873,7 @@
     const {error}=await sb.from("donations").insert({donor_name:anon?null:name,is_anonymous:anon,amount,donated_at:donatedAt,source:"manual",confirmed:true});
     $("#addBtn").disabled=false;
     if(error){console.error(error);toast("Error al guardar. Intenta de nuevo.");return;}
-    $("#dName").value="";$("#dAmount").value="";$("#dAnon").checked=false;$("#dName").disabled=false;toast("Donación registrada 💚");
+    $("#dName").value="";$("#dAmount").value="";$("#dAnon").checked=false;$("#dName").disabled=false;toast("Donación registrada");
   });
 
   $("#list").addEventListener("click",async e=>{const btn=e.target.closest(".del");if(!btn||!isAdmin||!adminOpen)return;if(!confirm("¿Ocultar esta donación de la lista pública?\n\nNo se borra: queda guardada y la puedes restaurar desde «Confirmar transacciones»."))return;const {error}=await sb.from("donations").update({deleted:true}).eq("id",btn.dataset.id);if(error){console.error(error);toast("No se pudo ocultar.");}else{const d=donations.find(x=>x.id===btn.dataset.id);if(d)d.deleted=true;render();toast("Donación ocultada");}});
@@ -891,7 +891,7 @@
     const {error:ins}=await sb.from("evidencia").insert({kind,caption:caption||null,file_path:path});
     $("#evUploadBtn").disabled=false;
     if(ins){console.error(ins);msg.textContent="No se pudo registrar.";msg.classList.add("err");return;}
-    $("#evCaption").value="";$("#evFile").value="";$("#evFileLabel").textContent="Elegir archivo (foto o PDF)";msg.textContent="¡Subido! 💚";
+    $("#evCaption").value="";$("#evFile").value="";$("#evFileLabel").textContent="Elegir archivo (foto o PDF)";msg.textContent="¡Subido!";
     loadEvidencia();
   });
   document.addEventListener("click",async e=>{const del=e.target.closest(".ev-del");if(!del||!isAdmin||!adminOpen)return;if(!confirm("¿Borrar esta evidencia?"))return;await sb.storage.from("evidencia").remove([del.dataset.p]);await sb.from("evidencia").delete().eq("id",del.dataset.id);loadEvidencia();});
