@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Venezuela nos necesita</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Ctext%20y='50'%20font-size='48'%3E🇻🇪%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -200,6 +201,7 @@
   .prog{order:1;}
   .main{order:2;}
   .donaciones{order:3;}
+  .updates-card{order:4;}
   .cover{margin-bottom:14px;}
   @media (min-width:880px){
     .grid{grid-template-columns:1fr 360px;align-items:start;}
@@ -317,6 +319,19 @@
   .exp-btn{font-family:inherit;font-size:13px;font-weight:700;color:var(--green-deep);background:var(--green-soft);border:1.5px solid #C7D8FB;border-radius:10px;padding:8px 13px;cursor:pointer;transition:.15s;}
   .exp-btn:hover{filter:brightness(.97);}
   .exp-btn:disabled{opacity:.6;cursor:default;}
+
+  /* actualizaciones */
+  .upd-input{width:100%;box-sizing:border-box;font-family:inherit;font-size:14px;font-weight:500;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:11px;padding:11px 12px;resize:vertical;min-height:54px;line-height:1.45;}
+  #updAdd{margin-bottom:14px;flex-direction:column;gap:9px;}
+  #updAdd .add{align-self:flex-start;}
+  .upd-item{display:flex;gap:8px;align-items:flex-start;padding:13px 0;border-top:1px solid var(--line);}
+  .upd-item:first-child{border-top:none;padding-top:2px;}
+  .upd-main{flex:1;min-width:0;}
+  .upd-body{font-size:14px;font-weight:500;color:var(--ink);line-height:1.5;word-wrap:break-word;}
+  .upd-date{font-size:11.5px;font-weight:600;color:var(--gray-soft);margin-top:6px;}
+  .upd-del{flex:none;width:26px;height:26px;border:none;background:none;color:var(--gray-soft);font-size:13px;cursor:pointer;border-radius:7px;}
+  .upd-del:hover{background:#FEE2E2;color:#EF4444;}
+  .upd-empty{font-size:13.5px;color:var(--gray);font-weight:500;line-height:1.5;}
   .cf-tag.review{background:#FEE2E2;color:#B91C1C;}
   .meta-edit{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
   .meta-lbl{font-size:13px;font-weight:700;color:var(--ink);}
@@ -392,6 +407,16 @@
           <div class="list" id="list"></div>
           <div class="fade"></div>
         </div>
+      </section>
+
+      <!-- ACTUALIZACIONES -->
+      <section class="card updates-card">
+        <div class="dhead"><h2>📣 Actualizaciones</h2></div>
+        <div id="updAdd" style="display:none">
+          <textarea class="upd-input" id="updText" rows="2" placeholder="Escribe una novedad para mostrar a todos…"></textarea>
+          <button class="add" id="updBtn">Publicar actualización</button>
+        </div>
+        <div id="updList"></div>
       </section>
     </aside>
 
@@ -618,7 +643,7 @@
   const slug = s => ((s||"file").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9.]+/g,"-").replace(/^-+|-+$/g,"").toLowerCase()||"archivo");
   const fdate = ts => new Date(ts).toLocaleDateString("es-EC",{day:"numeric",month:"short",year:"numeric"});
 
-  let donations=[], sortMode="destacadas", freshId=null, isAdmin=false, evidencia=[], adminOpen=false, showDeleted=false;
+  let donations=[], sortMode="destacadas", freshId=null, isAdmin=false, evidencia=[], adminOpen=false, showDeleted=false, updates=[];
   let ocrToken=0, ocrPromise=null, ocrText=null, ocrAnalyzed=false, curPreviewUrl=null;
 
   const mapRow = r => ({id:r.id,name:r.donor_name,anon:r.is_anonymous,amount:Number(r.amount),date:new Date(r.donated_at).getTime(),confirmed:r.confirmed!==false,source:r.source||"manual",file:r.file_path||null,review:r.review===true,deleted:r.deleted===true});
@@ -712,6 +737,39 @@
     }).join(""):'<div class="ev-empty">Aún no hay fotos de entregas. Muy pronto verás las primeras</div>';
   }
   sb.channel("evidencia-rt").on("postgres_changes",{event:"*",schema:"public",table:"evidencia"},()=>loadEvidencia()).subscribe();
+
+  /* ===== Actualizaciones ===== */
+  const esc=s=>(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  async function loadUpdates(){
+    const {data,error}=await sb.from("updates").select("*").order("created_at",{ascending:false});
+    if(error){console.error(error);return;}
+    updates=data||[];renderUpdates();
+  }
+  function renderUpdates(){
+    const admin=adminOpen&&isAdmin;
+    if(!updates.length){$("#updList").innerHTML='<div class="upd-empty">Aún no hay actualizaciones.</div>';return;}
+    $("#updList").innerHTML=updates.map(u=>{
+      const del=admin?`<button class="upd-del" data-id="${u.id}" title="Borrar">✕</button>`:"";
+      return `<div class="upd-item"><div class="upd-main"><div class="upd-body">${esc(u.body).replace(/\n/g,"<br>")}</div><div class="upd-date">${fdate(u.created_at)}</div></div>${del}</div>`;
+    }).join("");
+  }
+  sb.channel("updates-rt").on("postgres_changes",{event:"*",schema:"public",table:"updates"},()=>loadUpdates()).subscribe();
+  $("#updBtn").addEventListener("click",async()=>{
+    const body=$("#updText").value.trim();
+    if(!body){$("#updText").focus();return;}
+    $("#updBtn").disabled=true;
+    const {error}=await sb.from("updates").insert({body});
+    $("#updBtn").disabled=false;
+    if(error){console.error(error);toast("No se pudo publicar.");return;}
+    $("#updText").value="";toast("Actualización publicada");
+  });
+  $("#updList").addEventListener("click",async e=>{
+    const del=e.target.closest(".upd-del");
+    if(!del||!isAdmin||!adminOpen)return;
+    if(!confirm("¿Borrar esta actualización?"))return;
+    const {error}=await sb.from("updates").delete().eq("id",del.dataset.id);
+    if(error){console.error(error);toast("No se pudo borrar.");}
+  });
 
   /* ===== Confirmar transacciones (admin) ===== */
   function renderConfirm(){
@@ -918,8 +976,9 @@
     const tools=adminOpen&&isAdmin;
     $("#evUploadCard").style.display=tools?"block":"none";
     $("#confirmCard").style.display=tools?"block":"none";
+    $("#updAdd").style.display=tools?"flex":"none";
     if(tools)$("#dDate").value=new Date().toISOString().slice(0,10);
-    renderList();renderEvidencia();renderConfirm();
+    renderList();renderEvidencia();renderConfirm();renderUpdates();
   }
 
   sb.auth.onAuthStateChange((_e,session)=>{const email=session?.user?.email||"";isAdmin=ADMIN_EMAILS.includes(email);if(isAdmin)$("#who").textContent=email;setAdminUI();});
@@ -981,6 +1040,7 @@
     await loadGoal();
     await load();
     await loadEvidencia();
+    await loadUpdates();
   })();
 </script>
 </body>
