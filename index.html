@@ -292,6 +292,10 @@
   .cf-row{display:flex;align-items:center;gap:11px;padding:11px 0;border-top:1px solid var(--line);}
   .cf-row:first-of-type{border-top:none;}
   .cf-row.pend{background:#FFF8EC;margin:4px -10px;padding:11px 10px;border-radius:10px;border-top:none;}
+  #confirmList{max-height:300px;overflow:hidden auto;margin:2px -10px 0;padding:0 10px;}
+  #confirmList::-webkit-scrollbar{width:8px;}
+  #confirmList::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px;}
+  #confirmList::-webkit-scrollbar-thumb:hover{background:var(--gray-soft);}
   .cf-chk{width:20px;height:20px;flex:none;accent-color:var(--green-deep);cursor:pointer;}
   .cf-main{flex:1;min-width:0;}
   .cf-name{font-weight:700;font-size:14px;letter-spacing:-.01em;}
