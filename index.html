@@ -199,12 +199,121 @@
   .prog{order:1;}
   .main{order:2;}
   .donaciones{order:3;}
+  .cover{margin-bottom:14px;}
   @media (min-width:880px){
     .grid{grid-template-columns:1fr 360px;align-items:start;}
-    .rail{display:flex;flex-direction:column;gap:18px;grid-column:2;grid-row:2;}
-    .cover{grid-column:1 / -1;grid-row:1;}
-    .main{grid-column:1;grid-row:2;}
+    .rail{display:flex;flex-direction:column;gap:18px;grid-column:2;grid-row:1;}
+    .main{grid-column:1;grid-row:1;}
   }
+
+  /* ===== menú / vistas ===== */
+  .tabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;
+    padding:5px;margin-bottom:18px;box-shadow:var(--shadow);position:sticky;top:10px;z-index:20;}
+  .tab{flex:1;font-family:inherit;font-size:14.5px;font-weight:800;color:var(--gray);background:none;border:none;
+    padding:11px 14px;border-radius:999px;cursor:pointer;transition:.16s;letter-spacing:-.01em;}
+  .tab:hover{color:var(--ink);}
+  .tab.active{background:var(--green-deep);color:#fff;}
+
+  /* ===== evidencia ===== */
+  .ev-intro{text-align:center;padding:30px 22px;}
+  .ev-intro h2{font-size:clamp(24px,5vw,30px);font-weight:800;letter-spacing:-.02em;margin:0 0 10px;}
+  .ev-intro p{font-size:15px;color:var(--gray);font-weight:500;max-width:560px;margin:0 auto;line-height:1.6;}
+  .ev-section{margin-top:18px;}
+  .ev-shead{display:flex;align-items:center;justify-content:space-between;margin:0 0 14px;gap:10px;}
+  .ev-shead h3{margin:0;font-size:19px;font-weight:800;letter-spacing:-.015em;display:flex;align-items:center;gap:9px;}
+  .ev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
+  .ev-grid.docs{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));}
+  .ev-item{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;box-shadow:var(--shadow);}
+  .ev-item img{display:block;width:100%;height:150px;object-fit:cover;cursor:zoom-in;}
+  .ev-doc{display:flex;align-items:center;gap:11px;padding:14px;text-decoration:none;color:var(--ink);}
+  .ev-doc .ico{flex:none;width:38px;height:38px;border-radius:10px;background:var(--green-soft);display:grid;place-items:center;font-size:18px;}
+  .ev-doc .dt{font-weight:700;font-size:14px;letter-spacing:-.01em;}
+  .ev-doc .dd{font-size:12px;color:var(--gray);font-weight:600;}
+  .ev-cap{padding:9px 11px;font-size:12.5px;color:var(--ink);font-weight:600;line-height:1.4;}
+  .ev-cap .dd{display:block;color:var(--gray-soft);font-weight:600;font-size:11px;margin-top:2px;}
+  .ev-empty{padding:30px 14px;text-align:center;color:var(--gray);font-weight:600;font-size:14px;border:1.5px dashed var(--line);border-radius:14px;line-height:1.5;}
+  .ev-del{position:absolute;top:7px;right:7px;width:26px;height:26px;border-radius:8px;border:none;background:rgba(0,0,0,.55);color:#fff;font-size:13px;cursor:pointer;z-index:2;}
+  .ev-del:hover{background:#EF4444;}
+
+  /* uploader */
+  .field-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:11px;}
+  .inp{font-family:inherit;font-size:15px;font-weight:600;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:11px;padding:11px 13px;}
+  .inp.full{flex:1;min-width:160px;}
+  .money{display:flex;align-items:center;padding:0 12px;}
+  .money .cur{font-size:15px;font-weight:800;color:var(--gray);margin-right:5px;}
+  .money input{flex:1;min-width:0;width:100%;border:none;background:none;outline:none;font-family:inherit;font-size:15px;font-weight:600;color:var(--ink);padding:11px 0;}
+  .money input::-webkit-outer-spin-button,.money input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .money input[type=number]{-moz-appearance:textfield;}
+  select.inp{cursor:pointer;}
+  .filebtn{display:inline-flex;align-items:center;gap:8px;font-family:inherit;font-size:14px;font-weight:700;color:var(--green-deep);background:var(--green-soft);border:1.5px dashed var(--green);border-radius:11px;padding:11px 15px;cursor:pointer;transition:.15s;max-width:100%;}
+  .filebtn:hover{filter:brightness(.98);}
+  .filebtn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px;}
+  .filebtn input{display:none;}
+
+  /* modal */
+  .modal-overlay{position:fixed;inset:0;background:rgba(16,28,22,.55);backdrop-filter:blur(3px);display:none;align-items:flex-start;justify-content:center;padding:24px 16px;z-index:60;overflow-y:auto;}
+  .modal-overlay.show{display:flex;}
+  .modal{background:var(--card);border-radius:22px;max-width:460px;width:100%;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.3);position:relative;margin:auto;}
+  .modal-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:none;background:#F0F3F1;color:var(--ink);font-size:16px;cursor:pointer;transition:.15s;}
+  .modal-x:hover{background:var(--line);}
+  .modal h2{margin:0 0 6px;font-size:23px;font-weight:800;letter-spacing:-.02em;}
+  .modal .lead{margin:0 0 18px;font-size:14px;color:var(--gray);font-weight:500;line-height:1.5;}
+  .modal-bank{background:#F7FAF8;border:1px solid var(--line);border-radius:14px;padding:6px 14px 10px;margin-bottom:18px;}
+  .step-h{font-size:13px;font-weight:800;color:var(--green-deep);text-transform:uppercase;letter-spacing:.04em;margin:0 0 10px;}
+  .thanks{text-align:center;}
+  .thanks .big{font-size:46px;line-height:1;margin-bottom:10px;}
+  .thanks h2{margin:0 0 14px;}
+  .thanks ul{text-align:left;list-style:none;padding:0;margin:0 0 18px;display:flex;flex-direction:column;gap:12px;}
+  .thanks li{display:flex;gap:11px;font-size:14px;color:var(--ink);font-weight:500;line-height:1.5;}
+  .thanks li .ic{flex:none;font-size:18px;line-height:1.3;}
+  .thanks .heart{font-size:15px;font-weight:700;color:var(--green-deep);line-height:1.5;}
+  .msg{font-size:12.5px;color:var(--gray);font-weight:600;margin-top:8px;min-height:16px;}
+  .msg.err{color:#C2410C;}
+  .checkrow{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;margin:2px 0 4px;}
+  .checkrow input{width:18px;height:18px;accent-color:var(--green-deep);cursor:pointer;}
+  .ev-banner{display:flex;gap:12px;align-items:flex-start;background:var(--green-soft);border:1px solid #BCEBD3;
+    border-radius:16px;padding:16px 18px;margin-top:14px;font-size:14.5px;font-weight:600;color:var(--green-deep);line-height:1.5;}
+  .ev-banner .ic{font-size:20px;line-height:1.2;flex:none;}
+
+  /* análisis del comprobante (OCR) */
+  .ocrbox{display:flex;align-items:center;gap:11px;margin:10px 0 2px;padding:10px 12px;border-radius:12px;background:#F7FAF8;border:1px solid var(--line);}
+  .ocrbox img{width:46px;height:46px;border-radius:9px;object-fit:cover;flex:none;background:#EDF1EE;cursor:pointer;}
+  .ocrbox .st{flex:1;min-width:0;font-size:12.5px;font-weight:600;line-height:1.4;color:var(--gray);}
+  .ocrbox.ok{background:var(--green-soft);border-color:#BCEBD3;}
+  .ocrbox.ok .st{color:var(--green-deep);}
+  .ocrbox.warn{background:#FFF8EC;border-color:#FDE6B8;}
+  .ocrbox.warn .st{color:#92400E;}
+  .ocr-change{flex:none;align-self:center;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--green-deep);
+    background:#fff;border:1.5px solid var(--green);border-radius:9px;padding:7px 12px;cursor:pointer;white-space:nowrap;}
+  .ocr-change:hover{background:var(--green-soft);}
+
+  /* confirmar transacciones */
+  .cf-row{display:flex;align-items:center;gap:11px;padding:11px 0;border-top:1px solid var(--line);}
+  .cf-row:first-of-type{border-top:none;}
+  .cf-row.pend{background:#FFF8EC;margin:4px -10px;padding:11px 10px;border-radius:10px;border-top:none;}
+  .cf-chk{width:20px;height:20px;flex:none;accent-color:var(--green-deep);cursor:pointer;}
+  .cf-main{flex:1;min-width:0;}
+  .cf-name{font-weight:700;font-size:14px;letter-spacing:-.01em;}
+  .cf-meta{font-size:12px;color:var(--gray);font-weight:600;margin-top:1px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .cf-tag{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:2px 7px;border-radius:999px;}
+  .cf-tag.auto{background:#FEF3C7;color:#92400E;}
+  .cf-tag.manual{background:var(--green-soft);color:var(--green-deep);}
+  .cf-amt{font-weight:800;font-size:15px;flex:none;}
+  .cf-ver{flex:none;font-size:16px;background:none;border:none;cursor:pointer;padding:4px;border-radius:8px;}
+  .cf-ver:hover{background:var(--line);}
+  .cf-del{flex:none;width:30px;background:none;border:none;cursor:pointer;color:var(--gray-soft);font-size:14px;border-radius:8px;}
+  .cf-del:hover{background:#FEE2E2;color:#EF4444;}
+  .cf-tag.review{background:#FEE2E2;color:#B91C1C;}
+
+  /* mensaje de revisión + WhatsApp */
+  #reviewNote{background:#FFF8EC;border:1px solid #FDE6B8;border-radius:14px;padding:16px;margin-bottom:18px;}
+  .review-lead{font-size:14px;color:var(--ink);font-weight:600;line-height:1.5;margin:0 0 12px;text-align:left;}
+  .review-sub{font-size:12.5px;color:var(--gray);font-weight:600;line-height:1.5;margin:10px 0 0;text-align:left;}
+  .wa-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+    background:#25D366;color:#fff;font-family:inherit;font-size:15px;font-weight:800;text-decoration:none;
+    padding:13px;border-radius:13px;box-shadow:0 6px 16px rgba(37,211,102,.3);transition:.15s;}
+  .wa-btn:hover{filter:brightness(1.05);transform:translateY(-1px);}
+
   @media (prefers-reduced-motion:reduce){
     .fill{transition:none;}.donor.fresh{animation:none;}.live .ld{animation:none;}
     .btn-primary:hover{transform:none;}
@@ -219,14 +328,22 @@
     <button class="admin-btn" id="adminToggle" aria-pressed="false">Modo admin</button>
   </div>
 
-  <div class="grid">
+  <!-- COVER (header compartido) -->
+  <header class="cover">
+    <span class="chip">🇻🇪 Donación · Venezuela</span>
+    <h1>Venezuela nos necesita</h1>
+    <div class="org"><span class="av">CK</span> Organizado por Catherine Brett y Katherine Suárez</div>
+  </header>
 
-    <!-- COVER (reemplazable por una foto real) -->
-    <header class="cover">
-      <span class="chip">🇻🇪 Donación · Venezuela</span>
-      <h1>Venezuela nos necesita</h1>
-      <div class="org"><span class="av">CK</span> Organizado por Catherine Brett y Katherine Suárez</div>
-    </header>
+  <!-- MENÚ -->
+  <nav class="tabs">
+    <button class="tab active" data-view="donar">💚 Donar</button>
+    <button class="tab" data-view="evidencia">📸 Tu ayuda en acción</button>
+  </nav>
+
+  <!-- ===================== VISTA: DONAR ===================== -->
+  <div id="view-donar" class="view">
+    <div class="grid">
 
     <!-- COLUMNA DERECHA: recaudado + donantes (pegados) -->
     <aside class="rail">
@@ -291,6 +408,16 @@
         </div>
       </section>
 
+      <!-- CONFIRMAR TRANSACCIONES (solo admins) -->
+      <section class="card" id="confirmCard" style="display:none">
+        <div class="dhead">
+          <h2>Confirmar transacciones</h2>
+          <span class="count" id="pendCount">0 por confirmar</span>
+        </div>
+        <p class="sub">Las donaciones con comprobante entran <b>automáticamente sin marcar</b>. Marca ✓ cuando confirmes que el dinero llegó al banco. Toca 🧾 para ver el comprobante.</p>
+        <div id="confirmList"></div>
+      </section>
+
       <section class="card story">
         <span class="eyebrow">Emergencia humanitaria</span>
         <h2>Lo que está pasando</h2>
@@ -329,7 +456,7 @@
         <div class="socials">
           <a class="handle" href="#" onclick="return false">
             <svg class="ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="6"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
-            @catherinebrett</a>
+            @caatherinebrett</a>
           <a class="handle" href="#" onclick="return false">
             <svg class="ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="6"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
             @kathescribe</a>
@@ -337,12 +464,117 @@
       </section>
 
     </main>
+    </div>
+  </div>
+
+  <!-- ===================== VISTA: EVIDENCIA ===================== -->
+  <div id="view-evidencia" class="view" style="display:none">
+    <section class="card ev-intro">
+      <h2>Tu ayuda, hecha realidad 💚</h2>
+      <p>Aquí ves exactamente en qué se convierte tu aporte: tus compras en Venezuela y las entregas a quienes más lo necesitan. Sin intermediarios, con el corazón y con pruebas.</p>
+    </section>
+
+    <div class="ev-banner">
+      <span class="ic">📅</span>
+      <div>A partir del <b>domingo 28 de junio a las 8:00 p.&nbsp;m.</b> subiremos aquí toda la información de las primeras compras y entregas. ¡Gracias por tu confianza y tu paciencia! 💚</div>
+    </div>
+
+    <!-- subir evidencia (solo admins) -->
+    <section class="card" id="evUploadCard" style="display:none;margin-top:18px">
+      <div class="step-h">Subir evidencia (admins)</div>
+      <div class="field-row">
+        <select class="inp" id="evKind">
+          <option value="factura">🧾 Factura de compra</option>
+          <option value="foto">📷 Foto de entrega</option>
+        </select>
+        <input class="inp full" id="evCaption" type="text" placeholder="Descripción (ej: compra de pañales y leche)" />
+      </div>
+      <div class="field-row">
+        <label class="filebtn"><span id="evFileLabel">Elegir archivo (foto o PDF)</span>
+          <input type="file" id="evFile" accept="image/*,application/pdf" /></label>
+        <button class="add" id="evUploadBtn">Subir</button>
+      </div>
+      <div class="msg" id="evMsg"></div>
+    </section>
+
+    <section class="card ev-section" style="margin-top:18px">
+      <div class="ev-shead"><h3>🧾 Facturas de tus compras en Venezuela</h3><span class="count" id="factCount">0</span></div>
+      <div class="ev-grid docs" id="factGrid"></div>
+    </section>
+
+    <section class="card ev-section" style="margin-top:18px">
+      <div class="ev-shead"><h3>📷 Fotos de las entregas</h3><span class="count" id="fotoCount">0</span></div>
+      <div class="ev-grid" id="fotoGrid"></div>
+    </section>
+  </div>
+
+</div>
+
+<!-- ===================== MODAL DONAR ===================== -->
+<div class="modal-overlay" id="donateModal">
+  <div class="modal">
+    <button class="modal-x" id="modalClose" aria-label="Cerrar">✕</button>
+
+    <div id="donateStep">
+      <h2>Haz tu donación 💚</h2>
+      <p class="lead">Transfiere a esta cuenta y sube tu comprobante. Así validamos y te sumamos a la lista.</p>
+
+      <div class="modal-bank">
+        <div class="bank-row"><div><div class="k">Banco</div><div class="v" id="m-bank">Banco Guayaquil</div></div>
+          <button class="copy" data-c="m-bank">Copiar</button></div>
+        <div class="bank-row"><div><div class="k">Cuenta de ahorros</div><div class="v" id="m-acc">0043758599</div></div>
+          <button class="copy" data-c="m-acc">Copiar</button></div>
+        <div class="bank-row"><div><div class="k">Nombre</div><div class="v" id="m-name">Katherine Paola Suarez Cadevilla</div></div>
+          <button class="copy" data-c="m-name">Copiar</button></div>
+        <div class="bank-row"><div><div class="k">Cédula (CI)</div><div class="v" id="m-id">0963847017</div></div>
+          <button class="copy" data-c="m-id">Copiar</button></div>
+        <div class="bank-row"><div><div class="k">Código SWIFT</div><div class="v" id="m-swift">GUAYECEG</div></div>
+          <button class="copy" data-c="m-swift">Copiar</button></div>
+      </div>
+
+      <div class="step-h">Registra tu aporte</div>
+      <div class="field-row">
+        <div class="inp money" style="width:118px"><span class="cur">$</span>
+          <input id="compAmount" type="number" min="1" step="1" placeholder="Monto" /></div>
+        <input class="inp" id="compName" type="text" placeholder="Tu nombre" style="flex:1;min-width:130px" />
+      </div>
+      <label class="checkrow"><input type="checkbox" id="compAnon" /> Prefiero que mi donación sea anónima</label>
+      <div class="field-row" style="margin-top:11px">
+        <label class="filebtn"><span id="fileLabel">Elegir comprobante (foto o PDF)</span>
+          <input type="file" id="compFile" accept="image/*,application/pdf" /></label>
+      </div>
+      <div class="ocrbox" id="ocrBox" style="display:none">
+        <img id="ocrPreview" alt="" />
+        <div class="st" id="ocrStatus"></div>
+        <button type="button" class="ocr-change" id="ocrChange">Cambiar</button>
+      </div>
+      <button class="btn btn-primary" id="sendComprobante" style="width:100%;margin-top:6px">Enviar comprobante</button>
+      <div class="msg" id="compMsg"></div>
+    </div>
+
+    <div id="thanksStep" class="thanks" style="display:none">
+      <div class="big">💚</div>
+      <h2 id="thanksTitle">¡Gracias de todo corazón!</h2>
+      <div id="reviewNote" style="display:none">
+        <p class="review-lead">No pudimos verificar tu comprobante automáticamente. Para <b>publicar tu donación y sumarla al total</b>, envíanoslo por WhatsApp y lo confirmamos a mano:</p>
+        <a class="wa-btn" id="waBtn" href="https://wa.link/2rjcz6" target="_blank" rel="noopener">📲 Enviar comprobante por WhatsApp</a>
+        <p class="review-sub">En cuanto lo confirmemos, tu donación aparecerá en la lista y se sumará al total. Mientras tanto queda guardada en revisión. 💛</p>
+      </div>
+      <ul>
+        <li><span class="ic">⏳</span><span>Tu transferencia será <b>confirmada en las próximas horas</b>.</span></li>
+        <li><span class="ic">🛒</span><span>Cada día compramos insumos de primera necesidad y subimos <b>todas las facturas y fotos</b> de las entregas.</span></li>
+        <li><span class="ic">📲</span><span>Sigue todo el proceso por <b>Instagram @caatherinebrett</b> y en la pestaña <b>"Tu ayuda en acción"</b>.</span></li>
+      </ul>
+      <p class="heart">Gracias por tu generosidad. Lo que haces hoy llega directo a quienes más lo necesitan en Venezuela. 🇻🇪</p>
+      <button class="btn btn-primary" id="thanksClose" style="width:100%;margin-top:18px">Cerrar</button>
+    </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
   /* ===== Configuración Supabase ===== */
   const SUPABASE_URL = "https://bsxcojftglklzjxhphgl.supabase.co";
@@ -353,168 +585,232 @@
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   const fmt = n => "$" + Number(n).toLocaleString("es-EC");
   const $ = s => document.querySelector(s);
+  const $$ = s => document.querySelectorAll(s);
+  const slug = s => ((s||"file").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9.]+/g,"-").replace(/^-+|-+$/g,"").toLowerCase()||"archivo");
+  const fdate = ts => new Date(ts).toLocaleDateString("es-EC",{day:"numeric",month:"short",year:"numeric"});
 
-  let donations = [];      // {id, name, anon, amount, date}
-  let sortMode = "destacadas";
-  let freshId = null;
-  let isAdmin = false;
+  let donations=[], sortMode="destacadas", freshId=null, isAdmin=false, evidencia=[], adminOpen=false;
+  let ocrToken=0, ocrPromise=null, ocrText=null, ocrAnalyzed=false, curPreviewUrl=null;
 
-  const mapRow = r => ({ id:r.id, name:r.donor_name, anon:r.is_anonymous, amount:Number(r.amount), date:new Date(r.donated_at).getTime() });
+  const mapRow = r => ({id:r.id,name:r.donor_name,anon:r.is_anonymous,amount:Number(r.amount),date:new Date(r.donated_at).getTime(),confirmed:r.confirmed!==false,source:r.source||"manual",file:r.file_path||null,review:r.review===true});
 
-  const AV_COLORS = ["#13B86A","#3B82F6","#8B5CF6","#F59E0B","#EC4899","#06B6D4","#EF4444","#10B981"];
-  const heartSVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9.2C.3 8.4 2 5 5.2 5c2 0 3.3 1.1 4.8 3 1.5-1.9 2.8-3 4.8-3C18 5 19.7 8.4 18 11.8 15.5 16.4 12 21 12 21z"/></svg>';
+  const AV_COLORS=["#13B86A","#3B82F6","#8B5CF6","#F59E0B","#EC4899","#06B6D4","#EF4444","#10B981"];
+  const heartSVG='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9.2C.3 8.4 2 5 5.2 5c2 0 3.3 1.1 4.8 3 1.5-1.9 2.8-3 4.8-3C18 5 19.7 8.4 18 11.8 15.5 16.4 12 21 12 21z"/></svg>';
   function initials(n){return (n||"").split(/\s+/).map(w=>w[0]||"").slice(0,2).join("").toUpperCase()||"·";}
   function colorFor(n){let h=0;for(const c of (n||"x"))h=(h*31+c.charCodeAt(0))>>>0;return AV_COLORS[h%AV_COLORS.length];}
-  function rel(ts){
-    const s=Math.floor((Date.now()-ts)/1000);
-    if(s<60)return"hace unos segundos";
-    const m=Math.floor(s/60);if(m<60)return"hace "+m+" min";
-    const h=Math.floor(m/60);if(h<24)return"hace "+h+" h";
-    return"hace "+Math.floor(h/24)+" d";
-  }
-  function total(){return donations.reduce((s,d)=>s+d.amount,0);}
+  function rel(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return"hace unos segundos";const m=Math.floor(s/60);if(m<60)return"hace "+m+" min";const h=Math.floor(m/60);if(h<24)return"hace "+h+" h";return"hace "+Math.floor(h/24)+" d";}
+  function pubDons(){return donations.filter(d=>!d.review||d.confirmed);}
+  function total(){return pubDons().reduce((s,d)=>s+d.amount,0);}
 
   let cuRaf;
-  function countUp(el,target){
-    cancelAnimationFrame(cuRaf);
-    const start=parseInt(el.dataset.val||"0",10),dur=950,t0=performance.now();
-    (function step(nw){const k=Math.min(1,(nw-t0)/dur),e=1-Math.pow(1-k,3),v=Math.round(start+(target-start)*e);
-      el.textContent=fmt(v);el.dataset.val=v;if(k<1)cuRaf=requestAnimationFrame(step);})(performance.now());
-  }
+  function countUp(el,target){cancelAnimationFrame(cuRaf);const start=parseInt(el.dataset.val||"0",10),dur=950,t0=performance.now();(function step(nw){const k=Math.min(1,(nw-t0)/dur),e=1-Math.pow(1-k,3),v=Math.round(start+(target-start)*e);el.textContent=fmt(v);el.dataset.val=v;if(k<1)cuRaf=requestAnimationFrame(step);})(performance.now());}
 
-  function renderBar(){
-    const t=total(),pct=GOAL>0?Math.min(100,(t/GOAL)*100):0;
-    $("#fill").style.width=pct+"%";
-    $("#track").setAttribute("aria-valuenow",t);
-    countUp($("#raised"),t);
-    $("#pct").textContent=Math.round(pct)+"%";
-    $("#dcount").textContent=donations.length+(donations.length===1?" donación":" donaciones");
-    $("#count2").textContent=donations.length;
-    const fn=$("#featNote");
-    if(donations.length){
-      const top=[...donations].sort((a,b)=>b.amount-a.amount)[0];
-      $("#featName").textContent=(top.anon?"Anónimo":top.name)+" · "+fmt(top.amount);
-      fn.style.display="flex";
-    } else { fn.style.display="none"; }
-  }
+  function renderBar(){const pub=pubDons(),t=pub.reduce((s,d)=>s+d.amount,0),pct=GOAL>0?Math.min(100,(t/GOAL)*100):0;$("#fill").style.width=pct+"%";$("#track").setAttribute("aria-valuenow",t);countUp($("#raised"),t);$("#pct").textContent=Math.round(pct)+"%";$("#dcount").textContent=pub.length+(pub.length===1?" donación":" donaciones");$("#count2").textContent=pub.length;const fn=$("#featNote");if(pub.length){const top=[...pub].sort((a,b)=>b.amount-a.amount)[0];$("#featName").textContent=(top.anon?"Anónimo":top.name)+" · "+fmt(top.amount);fn.style.display="flex";}else{fn.style.display="none";}}
 
-  function sorted(){
-    const a=[...donations];
-    if(sortMode==="recientes")a.sort((x,y)=>y.date-x.date);
-    else if(sortMode==="az")a.sort((x,y)=>(x.name||"anónimo").localeCompare(y.name||"anónimo","es"));
-    else a.sort((x,y)=>y.amount-x.amount);
-    return a;
-  }
+  function sorted(){const a=pubDons();if(sortMode==="recientes")a.sort((x,y)=>y.date-x.date);else if(sortMode==="az")a.sort((x,y)=>(x.name||"anónimo").localeCompare(y.name||"anónimo","es"));else a.sort((x,y)=>y.amount-x.amount);return a;}
 
   function renderList(){
-    if(!donations.length){
-      $("#list").innerHTML='<div class="empty">Aún no hay donaciones registradas.<br>¡Pronto aparecerán aquí en vivo! 💚</div>';
-      return;
-    }
+    const pub=pubDons();
+    if(!pub.length){$("#list").innerHTML='<div class="empty">Aún no hay donaciones registradas.<br>¡Pronto aparecerán aquí en vivo! 💚</div>';return;}
     const a=sorted();
-    const recentId=[...donations].sort((x,y)=>y.date-x.date)[0].id;
-    const topId=[...donations].sort((x,y)=>y.amount-x.amount)[0].id;
+    const recentId=[...pub].sort((x,y)=>y.date-x.date)[0].id;
+    const topId=[...pub].sort((x,y)=>y.amount-x.amount)[0].id;
     $("#list").innerHTML=a.map(d=>{
       const nm=d.anon?"Anónimo":(d.name||"Anónimo");
-      const av=d.anon
-        ? `<div class="av" style="background:#AAB2AC">${heartSVG}</div>`
-        : `<div class="av" style="background:${colorFor(nm)}">${initials(nm)}</div>`;
-      let badges="";
-      if(d.id===topId)badges+='<span class="badge top">⭐ Destacada</span>';
-      if(d.id===recentId)badges+='<span class="badge recent">Más reciente</span>';
-      const del=isAdmin?`<button class="del" data-id="${d.id}" title="Borrar">✕</button>`:"";
-      return `<div class="donor${d.id===freshId?' fresh':''}">
-        ${av}
-        <div class="dinfo">
-          <div class="dname">${nm} ${badges}</div>
-          <div class="dmeta">${rel(d.date)}</div>
-        </div>
-        <div class="damt">${fmt(d.amount)}</div>
-        ${del}
-      </div>`;
+      const av=d.anon?`<div class="av" style="background:#AAB2AC">${heartSVG}</div>`:`<div class="av" style="background:${colorFor(nm)}">${initials(nm)}</div>`;
+      let badges="";if(d.id===topId)badges+='<span class="badge top">⭐ Destacada</span>';if(d.id===recentId)badges+='<span class="badge recent">Más reciente</span>';
+      const del=(adminOpen&&isAdmin)?`<button class="del" data-id="${d.id}" title="Borrar">✕</button>`:"";
+      return `<div class="donor${d.id===freshId?' fresh':''}">${av}<div class="dinfo"><div class="dname">${nm} ${badges}</div><div class="dmeta">${rel(d.date)}</div></div><div class="damt">${fmt(d.amount)}</div>${del}</div>`;
     }).join("");
     freshId=null;
   }
 
-  function render(){renderBar();renderList();}
+  function render(){renderBar();renderList();renderConfirm();}
 
-  /* ===== Cargar datos + tiempo real ===== */
-  async function load(){
-    const {data,error}=await sb.from("donations").select("*");
-    if(error){console.error(error);$("#list").innerHTML='<div class="empty">No se pudieron cargar las donaciones.<br>Revisa tu conexión y recarga.</div>';return;}
-    donations=data.map(mapRow);
+  async function load(){const {data,error}=await sb.from("donations").select("*");if(error){console.error(error);$("#list").innerHTML='<div class="empty">No se pudieron cargar las donaciones.<br>Revisa tu conexión y recarga.</div>';return;}donations=data.map(mapRow);render();}
+
+  sb.channel("donations-rt").on("postgres_changes",{event:"*",schema:"public",table:"donations"},p=>{
+    if(p.eventType==="INSERT"){donations.push(mapRow(p.new));freshId=p.new.id;}
+    else if(p.eventType==="UPDATE"){const i=donations.findIndex(d=>d.id===p.new.id);if(i>-1)donations[i]=mapRow(p.new);}
+    else if(p.eventType==="DELETE"){donations=donations.filter(d=>d.id!==p.old.id);}
     render();
+  }).subscribe();
+
+  /* ===== Evidencia (pública) ===== */
+  const isImg = p => /\.(jpe?g|png|webp|gif)$/i.test(p);
+  const evUrl = p => sb.storage.from("evidencia").getPublicUrl(p).data.publicUrl;
+
+  async function loadEvidencia(){
+    const {data,error}=await sb.from("evidencia").select("*").order("created_at",{ascending:false});
+    if(error){console.error(error);return;}
+    evidencia=data||[];renderEvidencia();
+  }
+  function renderEvidencia(){
+    const fact=evidencia.filter(e=>e.kind==="factura"), fotos=evidencia.filter(e=>e.kind==="foto");
+    $("#factCount").textContent=fact.length;$("#fotoCount").textContent=fotos.length;
+    $("#factGrid").innerHTML=fact.length?fact.map(e=>{
+      const u=evUrl(e.file_path),del=(adminOpen&&isAdmin)?`<button class="ev-del" data-id="${e.id}" data-p="${e.file_path}" title="Borrar">✕</button>`:"";
+      if(isImg(e.file_path))return `<div class="ev-item">${del}<a href="${u}" target="_blank" rel="noopener"><img src="${u}" alt="factura" loading="lazy"></a><div class="ev-cap">${e.caption||"Factura de compra"}<span class="dd">${fdate(e.created_at)}</span></div></div>`;
+      return `<div class="ev-item">${del}<a class="ev-doc" href="${u}" target="_blank" rel="noopener"><span class="ico">🧾</span><span><span class="dt">${e.caption||"Factura de compra"}</span><span class="dd">Ver factura · ${fdate(e.created_at)}</span></span></a></div>`;
+    }).join(""):'<div class="ev-empty">Aún no hay facturas. Pronto subiremos las primeras compras 💚</div>';
+    $("#fotoGrid").innerHTML=fotos.length?fotos.map(e=>{
+      const u=evUrl(e.file_path),del=(adminOpen&&isAdmin)?`<button class="ev-del" data-id="${e.id}" data-p="${e.file_path}" title="Borrar">✕</button>`:"";
+      return `<div class="ev-item">${del}<a href="${u}" target="_blank" rel="noopener"><img src="${u}" alt="entrega" loading="lazy"></a><div class="ev-cap">${e.caption||"Entrega de donativos"}<span class="dd">${fdate(e.created_at)}</span></div></div>`;
+    }).join(""):'<div class="ev-empty">Aún no hay fotos de entregas. Muy pronto verás las primeras 💚</div>';
+  }
+  sb.channel("evidencia-rt").on("postgres_changes",{event:"*",schema:"public",table:"evidencia"},()=>loadEvidencia()).subscribe();
+
+  /* ===== Confirmar transacciones (admin) ===== */
+  function renderConfirm(){
+    if(!(adminOpen&&isAdmin))return;
+    const rows=[...donations].sort((a,b)=>b.date-a.date);
+    const pend=rows.filter(d=>!d.confirmed).length;
+    $("#pendCount").textContent=pend+" por confirmar";
+    $("#confirmList").innerHTML=rows.length?rows.map(d=>{
+      const nm=d.anon?"Anónimo":(d.name||"Anónimo");
+      const tag=d.source==="manual"?'<span class="cf-tag manual">Manual</span>':((d.review&&!d.confirmed)?'<span class="cf-tag review">📲 Revisión</span>':'<span class="cf-tag auto">Auto</span>');
+      const ver=d.file?`<button class="cf-ver" data-p="${d.file}" title="Ver comprobante">🧾</button>`:"";
+      return `<div class="cf-row${d.confirmed?'':' pend'}"><input type="checkbox" class="cf-chk" data-id="${d.id}" ${d.confirmed?"checked":""}><div class="cf-main"><div class="cf-name">${nm}</div><div class="cf-meta">${new Date(d.date).toLocaleString("es-EC")} ${tag}</div></div><div class="cf-amt">${fmt(d.amount)}</div>${ver}<button class="cf-del" data-id="${d.id}" data-p="${d.file||""}" title="Borrar">✕</button></div>`;
+    }).join(""):'<div class="empty" style="padding:16px 6px">Aún no hay transacciones.</div>';
+  }
+  $("#confirmList").addEventListener("click",async e=>{
+    const chk=e.target.closest(".cf-chk");
+    if(chk){const id=chk.dataset.id,val=chk.checked;const {error}=await sb.from("donations").update({confirmed:val}).eq("id",id);if(error){console.error(error);chk.checked=!val;toast("No se pudo actualizar.");}else{const d=donations.find(x=>x.id===id);if(d)d.confirmed=val;render();}return;}
+    const ver=e.target.closest(".cf-ver");
+    if(ver){const {data,error}=await sb.storage.from("comprobantes").createSignedUrl(ver.dataset.p,3600);if(data?.signedUrl)window.open(data.signedUrl,"_blank");else{console.error(error);toast("No se pudo abrir el comprobante.");}return;}
+    const del=e.target.closest(".cf-del");
+    if(del){if(!confirm("¿Borrar esta donación? No se puede deshacer."))return;if(del.dataset.p){await sb.storage.from("comprobantes").remove([del.dataset.p]).catch(()=>{});}const {error}=await sb.from("donations").delete().eq("id",del.dataset.id);if(error){console.error(error);toast("No se pudo borrar.");}}
+  });
+
+  /* ===== Pestañas ===== */
+  $$(".tab").forEach(t=>t.addEventListener("click",()=>{
+    $$(".tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");
+    const v=t.dataset.view;
+    $("#view-donar").style.display=v==="donar"?"block":"none";
+    $("#view-evidencia").style.display=v==="evidencia"?"block":"none";
+    window.scrollTo({top:0,behavior:"smooth"});
+  }));
+
+  /* ===== Orden, toast, copiar ===== */
+  $$(".seg button").forEach(b=>b.addEventListener("click",()=>{$$(".seg button").forEach(x=>x.classList.remove("active"));b.classList.add("active");sortMode=b.dataset.sort;renderList();}));
+  let tt;function toast(msg){const el=$("#toast");el.textContent=msg;el.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>el.classList.remove("show"),1900);}
+  document.addEventListener("click",e=>{const b=e.target.closest(".copy");if(!b)return;const t=$("#"+b.dataset.c);if(!t)return;navigator.clipboard?.writeText(t.textContent.trim());b.textContent="¡Copiado!";b.classList.add("done");setTimeout(()=>{b.textContent="Copiar";b.classList.remove("done");},1400);});
+
+  /* ===== Modal donar ===== */
+  function openModal(){$("#donateModal").classList.add("show");$("#donateStep").style.display="block";$("#thanksStep").style.display="none";const m=$("#compMsg");m.textContent="";m.classList.remove("err");document.body.style.overflow="hidden";}
+  function closeModal(){$("#donateModal").classList.remove("show");document.body.style.overflow="";$("#compFile").value="";$("#compName").value="";$("#compName").disabled=false;$("#compAmount").value="";$("#compAnon").checked=false;$("#fileLabel").textContent="Elegir comprobante (foto o PDF)";ocrText=null;ocrAnalyzed=false;ocrPromise=null;if(curPreviewUrl){URL.revokeObjectURL(curPreviewUrl);curPreviewUrl=null;}setOcrBox("",null);}
+  $("#donateBtn").addEventListener("click",openModal);
+  $("#modalClose").addEventListener("click",closeModal);
+  $("#thanksClose").addEventListener("click",closeModal);
+  $("#donateModal").addEventListener("click",e=>{if(e.target.id==="donateModal")closeModal();});
+  $("#compFile").addEventListener("change",e=>{const f=e.target.files[0];$("#fileLabel").textContent=f?f.name:"Elegir comprobante (foto o PDF)";startOcr(f);});
+  $("#compAnon").addEventListener("change",e=>{const ni=$("#compName");ni.disabled=e.target.checked;if(e.target.checked)ni.value="";});
+  $("#ocrChange").addEventListener("click",()=>$("#compFile").click());
+  $("#ocrPreview").addEventListener("click",()=>$("#compFile").click());
+
+  /* ===== Análisis del comprobante (OCR en el navegador) ===== */
+  function analyzeReceipt(text,amount){
+    const t=(text||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    const tns=t.replace(/\s+/g,"");
+    const money=/\$\s*\d/.test(t)||/\d[.,]\d{2}\b/.test(t)||/\busd\b/.test(t)||/dolar/.test(t);
+    const kw=/(transferenc|comprobante|transaccion|deposito|beneficiari|banco|cuenta|ahorros|referencia|exitos|monto|pago|valor|saldo|operacion)/.test(t);
+    const strong=/(0043758599|guayeceg)/.test(tns)||/(guayaquil|katherine|suarez|cadevilla)/.test(t);
+    let amountMatch=false;
+    if(amount){const n=String(Math.round(amount));amountMatch=t.replace(/[.,]/g,"").includes(n);}
+    const pass=strong||(money&&kw)||(money&&amountMatch);
+    return {money,kw,strong,amountMatch,pass};
+  }
+  function setOcrBox(state,html){
+    const box=$("#ocrBox"),img=$("#ocrPreview");
+    if(!html){box.style.display="none";box.className="ocrbox";$("#ocrStatus").innerHTML="";img.style.display="none";img.removeAttribute("src");return;}
+    box.style.display="flex";box.className="ocrbox"+(state?(" "+state):"");
+    $("#ocrStatus").innerHTML=html;
+    if(curPreviewUrl){img.style.display="block";img.src=curPreviewUrl;}else{img.style.display="none";}
+  }
+  async function startOcr(f){
+    ocrText=null;ocrAnalyzed=false;ocrPromise=null;
+    if(curPreviewUrl){URL.revokeObjectURL(curPreviewUrl);curPreviewUrl=null;}
+    if(!f){setOcrBox("",null);return;}
+    const isPdf=/\.pdf$/i.test(f.name)||f.type==="application/pdf";
+    const isImage=(f.type||"").startsWith("image/")||/\.(jpe?g|png|webp|gif)$/i.test(f.name);
+    if(isImage)curPreviewUrl=URL.createObjectURL(f);
+    if(isPdf){setOcrBox("ok","📄 Archivo PDF adjuntado. Las administradoras lo revisarán.");return;}
+    if(!isImage){setOcrBox("",null);return;}
+    if(!window.Tesseract){setOcrBox("ok","Imagen adjuntada.");return;}
+    setOcrBox("run",'🔍 Analizando la imagen… <span style="opacity:.65">(puede tardar unos segundos)</span>');
+    const myToken=++ocrToken;
+    ocrPromise=(async()=>{
+      try{
+        const {data:{text}}=await Tesseract.recognize(f,"spa");
+        if(myToken!==ocrToken)return;
+        ocrText=text;ocrAnalyzed=true;
+        const dec=analyzeReceipt(text,parseFloat($("#compAmount").value));
+        if(dec.pass)setOcrBox("ok","✓ La imagen parece un comprobante.");
+        else setOcrBox("warn","⚠️ No parece un comprobante. Toca «Cambiar» si elegiste otra imagen por error, o envíala igual.");
+      }catch(err){
+        if(myToken!==ocrToken)return;
+        console.warn("OCR no disponible:",err);ocrAnalyzed=false;
+        setOcrBox("ok","Imagen adjuntada.");
+      }
+    })();
   }
 
-  sb.channel("donations-rt")
-    .on("postgres_changes",{event:"*",schema:"public",table:"donations"},payload=>{
-      if(payload.eventType==="INSERT"){donations.push(mapRow(payload.new));freshId=payload.new.id;}
-      else if(payload.eventType==="UPDATE"){const i=donations.findIndex(d=>d.id===payload.new.id);if(i>-1)donations[i]=mapRow(payload.new);}
-      else if(payload.eventType==="DELETE"){donations=donations.filter(d=>d.id!==payload.old.id);}
-      render();
-    })
-    .subscribe();
-
-  /* ===== Orden, toast, copiar, CTA ===== */
-  document.querySelectorAll(".seg button").forEach(b=>{
-    b.addEventListener("click",()=>{
-      document.querySelectorAll(".seg button").forEach(x=>x.classList.remove("active"));
-      b.classList.add("active");sortMode=b.dataset.sort;renderList();
-    });
+  $("#sendComprobante").addEventListener("click",async()=>{
+    const f=$("#compFile").files[0],msg=$("#compMsg");msg.classList.remove("err");
+    const anon=$("#compAnon").checked,name=$("#compName").value.trim(),amount=parseFloat($("#compAmount").value);
+    if(!amount||amount<=0){msg.textContent="Indica el monto que transferiste.";msg.classList.add("err");return;}
+    if(!anon&&!name){msg.textContent="Escribe tu nombre o marca la casilla de anónimo.";msg.classList.add("err");return;}
+    if(!f){msg.textContent="Adjunta tu comprobante para enviar.";msg.classList.add("err");return;}
+    if(f.size>10*1024*1024){msg.textContent="El archivo es muy grande (máx 10 MB).";msg.classList.add("err");return;}
+    if(ocrPromise){msg.textContent="Analizando la imagen…";try{await ocrPromise;}catch(e){}}
+    const needsReview = ocrAnalyzed && !analyzeReceipt(ocrText,amount).pass;
+    $("#sendComprobante").disabled=true;msg.textContent="Enviando…";
+    const path=Date.now()+"-"+slug(f.name);
+    const {error:up}=await sb.storage.from("comprobantes").upload(path,f);
+    if(up){console.error(up);msg.textContent="No se pudo enviar. Intenta de nuevo.";msg.classList.add("err");$("#sendComprobante").disabled=false;return;}
+    const {error:ins}=await sb.from("donations").insert({donor_name:anon?null:name,is_anonymous:anon,amount,donated_at:new Date().toISOString(),source:"comprobante",confirmed:false,review:needsReview,file_path:path});
+    $("#sendComprobante").disabled=false;
+    if(ins){console.error(ins);msg.textContent="No se pudo registrar. Intenta de nuevo.";msg.classList.add("err");return;}
+    $("#reviewNote").style.display=needsReview?"block":"none";
+    $("#thanksTitle").textContent=needsReview?"¡Gracias! Falta un pasito 💚":"¡Gracias de todo corazón!";
+    $("#donateStep").style.display="none";$("#thanksStep").style.display="block";
   });
 
-  let tt;
-  function toast(msg){const el=$("#toast");el.textContent=msg;el.classList.add("show");
-    clearTimeout(tt);tt=setTimeout(()=>el.classList.remove("show"),1800);}
+  /* ===== Compartir ===== */
+  $("#shareBtn").addEventListener("click",()=>{const url=window.location.href;if(navigator.share){navigator.share({title:"Venezuela nos necesita",url}).catch(()=>{});}else{navigator.clipboard?.writeText(url);toast("¡Enlace copiado! 💚");}});
 
-  document.querySelectorAll(".copy").forEach(b=>{
-    b.addEventListener("click",()=>{
-      const v=$("#"+b.dataset.c).textContent.trim();
-      navigator.clipboard?.writeText(v);
-      b.textContent="¡Copiado!";b.classList.add("done");
-      setTimeout(()=>{b.textContent="Copiar";b.classList.remove("done");},1400);
-    });
-  });
-
-  $("#donateBtn").addEventListener("click",()=>$("#instrucciones").scrollIntoView({behavior:"smooth",block:"start"}));
-  $("#shareBtn").addEventListener("click",()=>{
-    const url=window.location.href;
-    if(navigator.share){navigator.share({title:"Venezuela nos necesita",url});}
-    else{navigator.clipboard?.writeText(url);toast("¡Enlace copiado! 💚");}
-  });
-
-  /* ===== Modo admin ===== */
+  /* ===== Admin ===== */
   const at=$("#adminToggle");
   at.addEventListener("click",()=>{
-    const on=$("#adminPanel").classList.toggle("show");
-    at.classList.toggle("on",on);at.setAttribute("aria-pressed",on);
-    at.textContent=on?"Cerrar":"Modo admin";
-    if(on)$("#adminPanel").scrollIntoView({behavior:"smooth",block:"center"});
+    adminOpen=!adminOpen;
+    at.classList.toggle("on",adminOpen);
+    at.setAttribute("aria-pressed",adminOpen);
+    at.textContent=adminOpen?"Cerrar":"Modo admin";
+    $("#adminPanel").classList.toggle("show",adminOpen);
+    setAdminUI();
+    if(adminOpen)$("#adminPanel").scrollIntoView({behavior:"smooth",block:"center"});
   });
 
   function setAdminUI(){
     $("#loginView").style.display=isAdmin?"none":"block";
     $("#addView").style.display=isAdmin?"block":"none";
-    if(isAdmin)$("#dDate").value=new Date().toISOString().slice(0,10);
-    renderList();
+    const tools=adminOpen&&isAdmin;
+    $("#evUploadCard").style.display=tools?"block":"none";
+    $("#confirmCard").style.display=tools?"block":"none";
+    if(tools)$("#dDate").value=new Date().toISOString().slice(0,10);
+    renderList();renderEvidencia();renderConfirm();
   }
 
-  sb.auth.onAuthStateChange((_e,session)=>{
-    const email=session?.user?.email||"";
-    isAdmin=ADMIN_EMAILS.includes(email);
-    if(isAdmin)$("#who").textContent=email;
-    setAdminUI();
-  });
+  sb.auth.onAuthStateChange((_e,session)=>{const email=session?.user?.email||"";isAdmin=ADMIN_EMAILS.includes(email);if(isAdmin)$("#who").textContent=email;setAdminUI();});
 
   $("#loginBtn").addEventListener("click",async()=>{
-    const email=$("#loginEmail").value.trim(),pass=$("#loginPass").value;
-    if(!email||!pass){$("#loginMsg").textContent="Escribe tu correo y contraseña.";return;}
-    $("#loginMsg").textContent="Entrando…";
+    const email=$("#loginEmail").value.trim(),pass=$("#loginPass").value,msg=$("#loginMsg");
+    if(!email||!pass){msg.textContent="Escribe tu correo y contraseña.";return;}
+    msg.textContent="Entrando…";
     const {error}=await sb.auth.signInWithPassword({email,password:pass});
-    if(error){$("#loginMsg").textContent="Correo o contraseña incorrectos.";return;}
-    if(!ADMIN_EMAILS.includes(email)){$("#loginMsg").textContent="Esa cuenta no es de administradora.";await sb.auth.signOut();return;}
-    $("#loginMsg").textContent="";$("#loginPass").value="";
-    toast("Sesión iniciada 💚");
+    if(error){msg.textContent="Correo o contraseña incorrectos.";return;}
+    if(!ADMIN_EMAILS.includes(email)){msg.textContent="Esa cuenta no es de administradora.";await sb.auth.signOut();return;}
+    msg.textContent="";$("#loginPass").value="";toast("Sesión iniciada 💚");
   });
   $("#logoutBtn").addEventListener("click",async()=>{await sb.auth.signOut();toast("Sesión cerrada");});
 
@@ -527,30 +823,42 @@
     const di=$("#dDate").value,today=new Date().toISOString().slice(0,10);
     const donatedAt=(!di||di===today)?new Date().toISOString():new Date(di+"T12:00:00").toISOString();
     $("#addBtn").disabled=true;
-    const {error}=await sb.from("donations").insert({donor_name:anon?null:name,is_anonymous:anon,amount,donated_at:donatedAt});
+    const {error}=await sb.from("donations").insert({donor_name:anon?null:name,is_anonymous:anon,amount,donated_at:donatedAt,source:"manual",confirmed:true});
     $("#addBtn").disabled=false;
     if(error){console.error(error);toast("Error al guardar. Intenta de nuevo.");return;}
-    $("#dName").value="";$("#dAmount").value="";$("#dAnon").checked=false;$("#dName").disabled=false;
-    toast("Donación registrada 💚");
+    $("#dName").value="";$("#dAmount").value="";$("#dAnon").checked=false;$("#dName").disabled=false;toast("Donación registrada 💚");
   });
 
-  $("#list").addEventListener("click",async e=>{
-    const btn=e.target.closest(".del");if(!btn||!isAdmin)return;
-    if(!confirm("¿Borrar esta donación?"))return;
-    const {error}=await sb.from("donations").delete().eq("id",btn.dataset.id);
-    if(error){console.error(error);toast("No se pudo borrar.");}
+  $("#list").addEventListener("click",async e=>{const btn=e.target.closest(".del");if(!btn||!isAdmin||!adminOpen)return;if(!confirm("¿Borrar esta donación?"))return;const {error}=await sb.from("donations").delete().eq("id",btn.dataset.id);if(error){console.error(error);toast("No se pudo borrar.");}});
+
+  /* ===== Evidencia: subir (admin) + borrar ===== */
+  $("#evFile").addEventListener("change",e=>{const f=e.target.files[0];$("#evFileLabel").textContent=f?f.name:"Elegir archivo (foto o PDF)";});
+  $("#evUploadBtn").addEventListener("click",async()=>{
+    const kind=$("#evKind").value,caption=$("#evCaption").value.trim(),f=$("#evFile").files[0],msg=$("#evMsg");msg.classList.remove("err");
+    if(!f){msg.textContent="Adjunta un archivo.";msg.classList.add("err");return;}
+    if(f.size>10*1024*1024){msg.textContent="Máx 10 MB.";msg.classList.add("err");return;}
+    $("#evUploadBtn").disabled=true;msg.textContent="Subiendo…";
+    const path=kind+"/"+Date.now()+"-"+slug(f.name);
+    const {error:up}=await sb.storage.from("evidencia").upload(path,f);
+    if(up){console.error(up);msg.textContent="No se pudo subir.";msg.classList.add("err");$("#evUploadBtn").disabled=false;return;}
+    const {error:ins}=await sb.from("evidencia").insert({kind,caption:caption||null,file_path:path});
+    $("#evUploadBtn").disabled=false;
+    if(ins){console.error(ins);msg.textContent="No se pudo registrar.";msg.classList.add("err");return;}
+    $("#evCaption").value="";$("#evFile").value="";$("#evFileLabel").textContent="Elegir archivo (foto o PDF)";msg.textContent="¡Subido! 💚";
+    loadEvidencia();
   });
+  document.addEventListener("click",async e=>{const del=e.target.closest(".ev-del");if(!del||!isAdmin||!adminOpen)return;if(!confirm("¿Borrar esta evidencia?"))return;await sb.storage.from("evidencia").remove([del.dataset.p]);await sb.from("evidencia").delete().eq("id",del.dataset.id);loadEvidencia();});
 
   /* ===== Inicio ===== */
   $("#fill").style.width="0%";
   $("#list").innerHTML='<div class="empty">Cargando donaciones…</div>';
   (async()=>{
     const {data:{session}}=await sb.auth.getSession();
-    const email=session?.user?.email||"";
-    isAdmin=ADMIN_EMAILS.includes(email);
+    const email=session?.user?.email||"";isAdmin=ADMIN_EMAILS.includes(email);
     if(isAdmin)$("#who").textContent=email;
     setAdminUI();
     await load();
+    await loadEvidencia();
   })();
 </script>
 </body>
