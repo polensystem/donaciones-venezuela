@@ -237,6 +237,29 @@
   .ev-empty{padding:30px 14px;text-align:center;color:var(--gray);font-weight:600;font-size:14px;border:1.5px dashed var(--line);border-radius:14px;line-height:1.5;}
   .ev-del{position:absolute;top:7px;right:7px;width:26px;height:26px;border-radius:8px;border:none;background:rgba(0,0,0,.55);color:#fff;font-size:13px;cursor:pointer;z-index:2;}
   .ev-del:hover{background:#EF4444;}
+  .ev-badge{position:absolute;top:7px;left:7px;background:rgba(0,0,0,.62);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;z-index:2;letter-spacing:.02em;}
+  .ev-hint{font-size:12px;color:var(--gray);font-weight:500;line-height:1.45;margin:2px 0 10px;}
+  .ev-item{cursor:pointer;}
+
+  /* visor / galería */
+  .lb-overlay{position:fixed;inset:0;background:rgba(8,12,22,.92);display:none;align-items:center;justify-content:center;z-index:80;padding:20px;}
+  .lb-overlay.show{display:flex;}
+  .lb-stage{max-width:900px;width:100%;display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .lb-media{width:100%;display:flex;align-items:center;justify-content:center;}
+  .lb-media img{max-width:100%;max-height:72vh;border-radius:14px;box-shadow:0 16px 50px rgba(0,0,0,.5);object-fit:contain;background:#fff;}
+  .lb-doc{background:#fff;border-radius:18px;padding:42px 32px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+  .lb-doc-ic{font-size:48px;}
+  .lb-doc-btn{background:var(--green-deep);color:#fff;font-family:inherit;font-weight:800;font-size:15px;text-decoration:none;padding:12px 22px;border-radius:12px;}
+  .lb-cap{text-align:center;color:#fff;max-width:640px;}
+  .lb-caption{font-size:16px;font-weight:700;line-height:1.4;}
+  .lb-date{font-size:13px;opacity:.7;margin-top:4px;}
+  .lb-count{font-size:12px;opacity:.6;margin-top:9px;font-weight:700;letter-spacing:.05em;}
+  .lb-x{position:absolute;top:16px;right:18px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:17px;cursor:pointer;}
+  .lb-x:hover{background:rgba(255,255,255,.26);}
+  .lb-arrow{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;border:none;background:rgba(255,255,255,.16);color:#fff;font-size:30px;line-height:1;cursor:pointer;align-items:center;justify-content:center;}
+  .lb-arrow:hover{background:rgba(255,255,255,.3);}
+  .lb-prev{left:14px;}.lb-next{right:14px;}
+  @media(max-width:560px){.lb-arrow{width:42px;height:42px;font-size:24px;}.lb-prev{left:6px;}.lb-next{right:6px;}.lb-x{top:10px;right:10px;}.lb-caption{font-size:14.5px;}}
 
   /* uploader */
   .field-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:11px;}
@@ -333,6 +356,10 @@
   .upd-del:hover{background:#FEE2E2;color:#EF4444;}
   .upd-empty{font-size:13.5px;color:var(--gray);font-weight:500;line-height:1.5;}
   .cf-tag.review{background:#FEE2E2;color:#B91C1C;}
+  .cf-tag.intl{background:#E0F2FE;color:#075985;}
+  .cf-intl{flex:none;width:30px;height:30px;border:none;background:none;cursor:pointer;font-size:14px;border-radius:8px;filter:grayscale(1);opacity:.4;transition:.15s;}
+  .cf-intl:hover{background:var(--line);opacity:.75;}
+  .cf-intl.on{filter:none;opacity:1;background:#E0F2FE;}
   .meta-edit{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
   .meta-lbl{font-size:13px;font-weight:700;color:var(--ink);}
 
@@ -440,6 +467,7 @@
           <div class="arow">
             <input type="text" id="dName" placeholder="Nombre del donante" />
             <label class="check"><input type="checkbox" id="dAnon" /> anónimo</label>
+            <label class="check"><input type="checkbox" id="dIntl" /> 🌎 internacional</label>
           </div>
           <div class="arow">
             <input type="number" id="dAmount" placeholder="Monto" min="1" step="1" />
@@ -544,10 +572,11 @@
         <input class="inp full" id="evCaption" type="text" placeholder="Descripción (ej: compra de pañales y leche)" />
       </div>
       <div class="field-row">
-        <label class="filebtn"><span id="evFileLabel">Elegir archivo (foto o PDF)</span>
-          <input type="file" id="evFile" accept="image/*,application/pdf" /></label>
+        <label class="filebtn"><span id="evFileLabel">Elegir archivos (foto o PDF)</span>
+          <input type="file" id="evFile" accept="image/*,application/pdf" multiple /></label>
         <button class="add" id="evUploadBtn">Subir</button>
       </div>
+      <div class="ev-hint">💡 Puedes elegir <b>varias fotos a la vez</b>: se agruparán como un álbum de la misma compra/entrega, con esta misma descripción.</div>
       <div class="msg" id="evMsg"></div>
     </section>
 
@@ -593,6 +622,7 @@
         <input class="inp" id="compName" type="text" placeholder="Tu nombre" style="flex:1;min-width:130px" />
       </div>
       <label class="checkrow"><input type="checkbox" id="compAnon" /> Prefiero que mi donación sea anónima</label>
+      <label class="checkrow"><input type="checkbox" id="compIntl" /> 🌎 Transferencia internacional (banco fuera de Ecuador)</label>
       <div class="field-row" style="margin-top:11px">
         <label class="filebtn"><span id="fileLabel">Elegir comprobante (foto o PDF)</span>
           <input type="file" id="compFile" accept="image/*,application/pdf" /></label>
@@ -625,6 +655,21 @@
   </div>
 </div>
 
+<!-- VISOR / GALERÍA -->
+<div class="lb-overlay" id="lightbox">
+  <button class="lb-x" id="lbClose" aria-label="Cerrar">✕</button>
+  <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Anterior">‹</button>
+  <div class="lb-stage">
+    <div class="lb-media" id="lbMedia"></div>
+    <div class="lb-cap">
+      <div class="lb-caption" id="lbCaption"></div>
+      <div class="lb-date" id="lbDate"></div>
+      <div class="lb-count" id="lbCount"></div>
+    </div>
+  </div>
+  <button class="lb-arrow lb-next" id="lbNext" aria-label="Siguiente">›</button>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -646,7 +691,7 @@
   let donations=[], sortMode="destacadas", freshId=null, isAdmin=false, evidencia=[], adminOpen=false, showDeleted=false, updates=[];
   let ocrToken=0, ocrPromise=null, ocrText=null, ocrAnalyzed=false, curPreviewUrl=null;
 
-  const mapRow = r => ({id:r.id,name:r.donor_name,anon:r.is_anonymous,amount:Number(r.amount),date:new Date(r.donated_at).getTime(),confirmed:r.confirmed!==false,source:r.source||"manual",file:r.file_path||null,review:r.review===true,deleted:r.deleted===true});
+  const mapRow = r => ({id:r.id,name:r.donor_name,anon:r.is_anonymous,amount:Number(r.amount),date:new Date(r.donated_at).getTime(),confirmed:r.confirmed!==false,source:r.source||"manual",file:r.file_path||null,review:r.review===true,deleted:r.deleted===true,international:r.international===true});
 
   const AV_COLORS=["#6366F1","#3B82F6","#8B5CF6","#F59E0B","#EC4899","#06B6D4","#EF4444","#0EA5E9"];
   const heartSVG='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9.2C.3 8.4 2 5 5.2 5c2 0 3.3 1.1 4.8 3 1.5-1.9 2.8-3 4.8-3C18 5 19.7 8.4 18 11.8 15.5 16.4 12 21 12 21z"/></svg>';
@@ -723,20 +768,53 @@
     if(error){console.error(error);return;}
     evidencia=data||[];renderEvidencia();
   }
+  function evGroups(kind){
+    const map=new Map();
+    for(const e of evidencia.filter(x=>x.kind===kind)){
+      const g=e.group_id||e.id;
+      if(!map.has(g))map.set(g,{key:String(g),kind,caption:e.caption,date:e.created_at,items:[]});
+      map.get(g).items.push(e);
+    }
+    return [...map.values()];
+  }
+  function evCover(e){return isImg(e.file_path)?`<img src="${evUrl(e.file_path)}" alt="" loading="lazy">`:`<div class="ev-doc"><span class="ico">🧾</span><span><span class="dt">Documento</span><span class="dd">PDF</span></span></div>`;}
   function renderEvidencia(){
-    const fact=evidencia.filter(e=>e.kind==="factura"), fotos=evidencia.filter(e=>e.kind==="foto");
+    const fact=evGroups("factura"), fotos=evGroups("foto"), admin=adminOpen&&isAdmin;
     $("#factCount").textContent=fact.length;$("#fotoCount").textContent=fotos.length;
-    $("#factGrid").innerHTML=fact.length?fact.map(e=>{
-      const u=evUrl(e.file_path),del=(adminOpen&&isAdmin)?`<button class="ev-del" data-id="${e.id}" data-p="${e.file_path}" title="Borrar">✕</button>`:"";
-      if(isImg(e.file_path))return `<div class="ev-item">${del}<a href="${u}" target="_blank" rel="noopener"><img src="${u}" alt="factura" loading="lazy"></a><div class="ev-cap">${e.caption||"Factura de compra"}<span class="dd">${fdate(e.created_at)}</span></div></div>`;
-      return `<div class="ev-item">${del}<a class="ev-doc" href="${u}" target="_blank" rel="noopener"><span class="ico">🧾</span><span><span class="dt">${e.caption||"Factura de compra"}</span><span class="dd">Ver factura · ${fdate(e.created_at)}</span></span></a></div>`;
-    }).join(""):'<div class="ev-empty">Aún no hay facturas. Pronto subiremos las primeras compras</div>';
-    $("#fotoGrid").innerHTML=fotos.length?fotos.map(e=>{
-      const u=evUrl(e.file_path),del=(adminOpen&&isAdmin)?`<button class="ev-del" data-id="${e.id}" data-p="${e.file_path}" title="Borrar">✕</button>`:"";
-      return `<div class="ev-item">${del}<a href="${u}" target="_blank" rel="noopener"><img src="${u}" alt="entrega" loading="lazy"></a><div class="ev-cap">${e.caption||"Entrega de donativos"}<span class="dd">${fdate(e.created_at)}</span></div></div>`;
-    }).join(""):'<div class="ev-empty">Aún no hay fotos de entregas. Muy pronto verás las primeras</div>';
+    const card=(g,defCap)=>{
+      const del=admin?`<button class="ev-del" data-kind="${g.kind}" data-group="${g.key}" title="Borrar">✕</button>`:"";
+      const ic=g.kind==="factura"?"🧾":"📷";
+      const badge=g.items.length>1?`<span class="ev-badge">${ic} ${g.items.length}</span>`:"";
+      return `<div class="ev-item${isImg(g.items[0].file_path)?"":" ev-item-doc"}" data-kind="${g.kind}" data-group="${g.key}">${del}${badge}${evCover(g.items[0])}<div class="ev-cap">${g.caption||defCap}<span class="dd">${fdate(g.date)}</span></div></div>`;
+    };
+    $("#factGrid").innerHTML=fact.length?fact.map(g=>card(g,"Factura de compra")).join(""):'<div class="ev-empty">Aún no hay facturas. Pronto subiremos las primeras compras</div>';
+    $("#fotoGrid").innerHTML=fotos.length?fotos.map(g=>card(g,"Entrega de donativos")).join(""):'<div class="ev-empty">Aún no hay fotos de entregas. Muy pronto verás las primeras</div>';
   }
   sb.channel("evidencia-rt").on("postgres_changes",{event:"*",schema:"public",table:"evidencia"},()=>loadEvidencia()).subscribe();
+
+  /* ===== Visor / galería por álbum ===== */
+  let lbItems=[], lbIndex=0, lbCaption="";
+  function openGroup(kind,gkey){
+    const g=evGroups(kind).find(x=>x.key===String(gkey));if(!g)return;
+    lbItems=g.items;lbIndex=0;lbCaption=g.caption||(kind==="factura"?"Factura de compra":"Entrega de donativos");
+    renderLightbox();$("#lightbox").classList.add("show");document.body.style.overflow="hidden";
+  }
+  function closeLightbox(){$("#lightbox").classList.remove("show");document.body.style.overflow="";$("#lbMedia").innerHTML="";}
+  function lbGo(dir){if(lbItems.length<2)return;lbIndex=(lbIndex+dir+lbItems.length)%lbItems.length;renderLightbox();}
+  function renderLightbox(){
+    const e=lbItems[lbIndex];if(!e)return;const u=evUrl(e.file_path);
+    $("#lbMedia").innerHTML=isImg(e.file_path)?`<img src="${u}" alt="">`:`<div class="lb-doc"><div class="lb-doc-ic">🧾</div><a class="lb-doc-btn" href="${u}" target="_blank" rel="noopener">Abrir archivo (PDF)</a></div>`;
+    $("#lbCaption").textContent=lbCaption;
+    $("#lbDate").textContent=fdate(e.created_at);
+    $("#lbCount").textContent=lbItems.length>1?(lbIndex+1)+" / "+lbItems.length:"";
+    const multi=lbItems.length>1;$("#lbPrev").style.display=multi?"flex":"none";$("#lbNext").style.display=multi?"flex":"none";
+  }
+  $("#lbPrev").addEventListener("click",()=>lbGo(-1));
+  $("#lbNext").addEventListener("click",()=>lbGo(1));
+  $("#lbClose").addEventListener("click",closeLightbox);
+  $("#lightbox").addEventListener("click",e=>{if(e.target.id==="lightbox")closeLightbox();});
+  document.addEventListener("keydown",e=>{if(!$("#lightbox").classList.contains("show"))return;if(e.key==="Escape")closeLightbox();else if(e.key==="ArrowLeft")lbGo(-1);else if(e.key==="ArrowRight")lbGo(1);});
+  ["#factGrid","#fotoGrid"].forEach(sel=>{$(sel).addEventListener("click",e=>{if(e.target.closest(".ev-del"))return;const it=e.target.closest(".ev-item");if(!it)return;openGroup(it.dataset.kind,it.dataset.group);});});
 
   /* ===== Actualizaciones ===== */
   const esc=s=>(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -779,10 +857,12 @@
     $("#pendCount").textContent=active.filter(d=>!d.confirmed).length+" por confirmar";
     function row(d,isDel){
       const nm=d.anon?"Anónimo":(d.name||"Anónimo");
-      const tag=d.source==="manual"?'<span class="cf-tag manual">Manual</span>':((d.review&&!d.confirmed)?'<span class="cf-tag review">📲 Revisión</span>':'<span class="cf-tag auto">Auto</span>');
+      let tag=d.source==="manual"?'<span class="cf-tag manual">Manual</span>':((d.review&&!d.confirmed)?'<span class="cf-tag review">📲 Revisión</span>':'<span class="cf-tag auto">Auto</span>');
+      if(d.international)tag+=' <span class="cf-tag intl">🌎 Internacional</span>';
       const ver=d.file?`<button class="cf-ver" data-p="${d.file}" title="Ver comprobante">🧾</button>`:"";
       if(isDel)return `<div class="cf-row del"><div class="cf-main"><div class="cf-name">${nm}</div><div class="cf-meta">${new Date(d.date).toLocaleString("es-EC")} ${tag}</div></div><div class="cf-amt">${fmt(d.amount)}</div>${ver}<button class="cf-restore" data-id="${d.id}">Restaurar</button></div>`;
-      return `<div class="cf-row${d.confirmed?'':' pend'}"><input type="checkbox" class="cf-chk" data-id="${d.id}" ${d.confirmed?"checked":""}><div class="cf-main"><div class="cf-name">${nm}</div><div class="cf-meta">${new Date(d.date).toLocaleString("es-EC")} ${tag}</div></div><div class="cf-amt">${fmt(d.amount)}</div>${ver}<button class="cf-del" data-id="${d.id}" title="Ocultar">✕</button></div>`;
+      const intl=`<button class="cf-intl${d.international?' on':''}" data-id="${d.id}" title="${d.international?'Quitar internacional':'Marcar como internacional'}">🌎</button>`;
+      return `<div class="cf-row${d.confirmed?'':' pend'}"><input type="checkbox" class="cf-chk" data-id="${d.id}" ${d.confirmed?"checked":""}><div class="cf-main"><div class="cf-name">${nm}</div><div class="cf-meta">${new Date(d.date).toLocaleString("es-EC")} ${tag}</div></div><div class="cf-amt">${fmt(d.amount)}</div>${intl}${ver}<button class="cf-del" data-id="${d.id}" title="Ocultar">✕</button></div>`;
     }
     let html=active.length?active.map(d=>row(d,false)).join(""):'<div class="empty" style="padding:16px 6px">Aún no hay transacciones.</div>';
     if(showDeleted&&del.length)html+='<div class="cf-divider">Ocultas (no se borran · se pueden restaurar)</div>'+del.map(d=>row(d,true)).join("");
@@ -800,6 +880,7 @@
       d.amount,
       d.confirmed?"Confirmada":(d.review?"En revisión":"Por confirmar"),
       d.source==="manual"?"Manual":"Comprobante",
+      d.international?"Sí":"No",
       d.deleted?"Oculta":"Pública"
     ]));
   }
@@ -815,11 +896,11 @@
         ["Generado: "+new Date().toLocaleString("es-EC")],
         ["Recaudado público: $"+s.tot+"   |   Meta: $"+GOAL+"   |   Públicas: "+s.pub+"   |   Por confirmar: "+s.pend],
         [],
-        ["Fecha","Nombre","Monto (USD)","Estado","Origen","Visibilidad"],
+        ["Fecha","Nombre","Monto (USD)","Estado","Origen","Internacional","Visibilidad"],
         ...exportRows()
       ];
       const ws=XLSX.utils.aoa_to_sheet(aoa);
-      ws["!cols"]=[{wch:20},{wch:24},{wch:12},{wch:14},{wch:14},{wch:12}];
+      ws["!cols"]=[{wch:20},{wch:24},{wch:12},{wch:14},{wch:14},{wch:13},{wch:12}];
       const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Donaciones");
       XLSX.writeFile(wb,"donaciones-venezuela.xlsx");
     }catch(e){console.error(e);toast("No se pudo exportar a Excel.");}
@@ -838,8 +919,8 @@
       doc.text("Recaudado público: $"+s.tot+"    Meta: $"+GOAL+"    Públicas: "+s.pub+"    Por confirmar: "+s.pend,14,27);
       doc.autoTable({
         startY:32,
-        head:[["Fecha","Nombre","Monto","Estado","Origen","Visib."]],
-        body:exportRows().map(r=>[r[0],r[1],"$"+r[2],r[3],r[4],r[5]]),
+        head:[["Fecha","Nombre","Monto","Estado","Origen","Intl.","Visib."]],
+        body:exportRows().map(r=>[r[0],r[1],"$"+r[2],r[3],r[4],r[5],r[6]]),
         styles:{fontSize:8,cellPadding:2},
         headStyles:{fillColor:[29,78,216]},
         alternateRowStyles:{fillColor:[240,245,255]}
@@ -855,6 +936,8 @@
     if(chk){const id=chk.dataset.id,val=chk.checked;const {error}=await sb.from("donations").update({confirmed:val}).eq("id",id);if(error){console.error(error);chk.checked=!val;toast("No se pudo actualizar.");}else{const d=donations.find(x=>x.id===id);if(d)d.confirmed=val;render();}return;}
     const ver=e.target.closest(".cf-ver");
     if(ver){const {data,error}=await sb.storage.from("comprobantes").createSignedUrl(ver.dataset.p,3600);if(data?.signedUrl)window.open(data.signedUrl,"_blank");else{console.error(error);toast("No se pudo abrir el comprobante.");}return;}
+    const intl=e.target.closest(".cf-intl");
+    if(intl){const id=intl.dataset.id,d=donations.find(x=>x.id===id),val=!(d&&d.international);const {error}=await sb.from("donations").update({international:val}).eq("id",id);if(error){console.error(error);toast("No se pudo actualizar.");}else{if(d)d.international=val;renderConfirm();}return;}
     const del=e.target.closest(".cf-del");
     if(del){if(!confirm("¿Ocultar esta donación de la lista pública?\n\nNo se borra: queda guardada y la puedes restaurar desde «Ver ocultas»."))return;const {error}=await sb.from("donations").update({deleted:true}).eq("id",del.dataset.id);if(error){console.error(error);toast("No se pudo ocultar.");}else{const d=donations.find(x=>x.id===del.dataset.id);if(d)d.deleted=true;render();toast("Donación ocultada");}return;}
     const res=e.target.closest(".cf-restore");
@@ -877,7 +960,7 @@
 
   /* ===== Modal donar ===== */
   function openModal(){$("#donateModal").classList.add("show");$("#donateStep").style.display="block";$("#thanksStep").style.display="none";const m=$("#compMsg");m.textContent="";m.classList.remove("err");document.body.style.overflow="hidden";}
-  function closeModal(){$("#donateModal").classList.remove("show");document.body.style.overflow="";$("#compFile").value="";$("#compName").value="";$("#compName").disabled=false;$("#compAmount").value="";$("#compAnon").checked=false;$("#fileLabel").textContent="Elegir comprobante (foto o PDF)";ocrText=null;ocrAnalyzed=false;ocrPromise=null;if(curPreviewUrl){URL.revokeObjectURL(curPreviewUrl);curPreviewUrl=null;}setOcrBox("",null);}
+  function closeModal(){$("#donateModal").classList.remove("show");document.body.style.overflow="";$("#compFile").value="";$("#compName").value="";$("#compName").disabled=false;$("#compAmount").value="";$("#compAnon").checked=false;$("#compIntl").checked=false;$("#fileLabel").textContent="Elegir comprobante (foto o PDF)";ocrText=null;ocrAnalyzed=false;ocrPromise=null;if(curPreviewUrl){URL.revokeObjectURL(curPreviewUrl);curPreviewUrl=null;}setOcrBox("",null);}
   $("#donateBtn").addEventListener("click",openModal);
   $("#modalClose").addEventListener("click",closeModal);
   $("#thanksClose").addEventListener("click",closeModal);
@@ -947,7 +1030,7 @@
     const path=Date.now()+"-"+slug(f.name);
     const {error:up}=await sb.storage.from("comprobantes").upload(path,f);
     if(up){console.error(up);msg.textContent="No se pudo enviar. Intenta de nuevo.";msg.classList.add("err");$("#sendComprobante").disabled=false;return;}
-    const {error:ins}=await sb.from("donations").insert({donor_name:anon?null:name,is_anonymous:anon,amount,donated_at:new Date().toISOString(),source:"comprobante",confirmed:false,review:needsReview,file_path:path});
+    const {error:ins}=await sb.from("donations").insert({donor_name:anon?null:name,is_anonymous:anon,amount,donated_at:new Date().toISOString(),source:"comprobante",confirmed:false,review:needsReview,file_path:path,international:$("#compIntl").checked});
     $("#sendComprobante").disabled=false;
     if(ins){console.error(ins);msg.textContent="No se pudo registrar. Intenta de nuevo.";msg.classList.add("err");return;}
     $("#reviewNote").style.display=needsReview?"block":"none";
@@ -1003,31 +1086,47 @@
     const di=$("#dDate").value,today=new Date().toISOString().slice(0,10);
     const donatedAt=(!di||di===today)?new Date().toISOString():new Date(di+"T12:00:00").toISOString();
     $("#addBtn").disabled=true;
-    const {error}=await sb.from("donations").insert({donor_name:anon?null:name,is_anonymous:anon,amount,donated_at:donatedAt,source:"manual",confirmed:true});
+    const {error}=await sb.from("donations").insert({donor_name:anon?null:name,is_anonymous:anon,amount,donated_at:donatedAt,source:"manual",confirmed:true,international:$("#dIntl").checked});
     $("#addBtn").disabled=false;
     if(error){console.error(error);toast("Error al guardar. Intenta de nuevo.");return;}
-    $("#dName").value="";$("#dAmount").value="";$("#dAnon").checked=false;$("#dName").disabled=false;toast("Donación registrada");
+    $("#dName").value="";$("#dAmount").value="";$("#dAnon").checked=false;$("#dIntl").checked=false;$("#dName").disabled=false;toast("Donación registrada");
   });
 
   $("#list").addEventListener("click",async e=>{const btn=e.target.closest(".del");if(!btn||!isAdmin||!adminOpen)return;if(!confirm("¿Ocultar esta donación de la lista pública?\n\nNo se borra: queda guardada y la puedes restaurar desde «Confirmar transacciones»."))return;const {error}=await sb.from("donations").update({deleted:true}).eq("id",btn.dataset.id);if(error){console.error(error);toast("No se pudo ocultar.");}else{const d=donations.find(x=>x.id===btn.dataset.id);if(d)d.deleted=true;render();toast("Donación ocultada");}});
 
   /* ===== Evidencia: subir (admin) + borrar ===== */
-  $("#evFile").addEventListener("change",e=>{const f=e.target.files[0];$("#evFileLabel").textContent=f?f.name:"Elegir archivo (foto o PDF)";});
+  function evUuid(){try{if(crypto&&crypto.randomUUID)return crypto.randomUUID();}catch(e){}return "g-"+Date.now()+"-"+Math.random().toString(36).slice(2);}
+  $("#evFile").addEventListener("change",e=>{const n=e.target.files.length;$("#evFileLabel").textContent=n?(n===1?e.target.files[0].name:n+" archivos seleccionados"):"Elegir archivos (foto o PDF)";});
   $("#evUploadBtn").addEventListener("click",async()=>{
-    const kind=$("#evKind").value,caption=$("#evCaption").value.trim(),f=$("#evFile").files[0],msg=$("#evMsg");msg.classList.remove("err");
-    if(!f){msg.textContent="Adjunta un archivo.";msg.classList.add("err");return;}
-    if(f.size>10*1024*1024){msg.textContent="Máx 10 MB.";msg.classList.add("err");return;}
-    $("#evUploadBtn").disabled=true;msg.textContent="Subiendo…";
-    const path=kind+"/"+Date.now()+"-"+slug(f.name);
-    const {error:up}=await sb.storage.from("evidencia").upload(path,f);
-    if(up){console.error(up);msg.textContent="No se pudo subir.";msg.classList.add("err");$("#evUploadBtn").disabled=false;return;}
-    const {error:ins}=await sb.from("evidencia").insert({kind,caption:caption||null,file_path:path});
+    const kind=$("#evKind").value,caption=$("#evCaption").value.trim(),files=[...$("#evFile").files],msg=$("#evMsg");msg.classList.remove("err");
+    if(!files.length){msg.textContent="Adjunta al menos un archivo.";msg.classList.add("err");return;}
+    if(files.some(f=>f.size>10*1024*1024)){msg.textContent="Cada archivo debe pesar máximo 10 MB.";msg.classList.add("err");return;}
+    $("#evUploadBtn").disabled=true;
+    const gid=evUuid();let done=0,fail=0;
+    for(const f of files){
+      msg.textContent="Subiendo… ("+(done+fail+1)+"/"+files.length+")";
+      const path=kind+"/"+Date.now()+"-"+Math.random().toString(36).slice(2,7)+"-"+slug(f.name);
+      const {error:up}=await sb.storage.from("evidencia").upload(path,f);
+      if(up){console.error(up);fail++;continue;}
+      const {error:ins}=await sb.from("evidencia").insert({kind,caption:caption||null,file_path:path,group_id:gid});
+      if(ins){console.error(ins);fail++;continue;}
+      done++;
+    }
     $("#evUploadBtn").disabled=false;
-    if(ins){console.error(ins);msg.textContent="No se pudo registrar.";msg.classList.add("err");return;}
-    $("#evCaption").value="";$("#evFile").value="";$("#evFileLabel").textContent="Elegir archivo (foto o PDF)";msg.textContent="¡Subido!";
+    if(!done){msg.textContent="No se pudo subir.";msg.classList.add("err");return;}
+    $("#evCaption").value="";$("#evFile").value="";$("#evFileLabel").textContent="Elegir archivos (foto o PDF)";
+    msg.classList.remove("err");
+    msg.textContent=fail?`Subido (${done}); ${fail} no se pudieron`:(done>1?`¡${done} archivos subidos como un álbum!`:"¡Subido!");
     loadEvidencia();
   });
-  document.addEventListener("click",async e=>{const del=e.target.closest(".ev-del");if(!del||!isAdmin||!adminOpen)return;if(!confirm("¿Borrar esta evidencia?"))return;await sb.storage.from("evidencia").remove([del.dataset.p]);await sb.from("evidencia").delete().eq("id",del.dataset.id);loadEvidencia();});
+  document.addEventListener("click",async e=>{
+    const del=e.target.closest(".ev-del");if(!del||!isAdmin||!adminOpen)return;
+    const g=evGroups(del.dataset.kind).find(x=>x.key===String(del.dataset.group));if(!g)return;
+    if(!confirm(g.items.length>1?`¿Borrar este álbum de ${g.items.length} archivos?`:"¿Borrar esta evidencia?"))return;
+    await sb.storage.from("evidencia").remove(g.items.map(i=>i.file_path)).catch(()=>{});
+    await sb.from("evidencia").delete().in("id",g.items.map(i=>i.id));
+    loadEvidencia();
+  });
 
   /* ===== Inicio ===== */
   $("#fill").style.width="0%";
