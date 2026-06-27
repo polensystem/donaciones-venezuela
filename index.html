@@ -312,6 +312,11 @@
   .cf-restore{flex:none;font-family:inherit;font-size:12px;font-weight:700;color:var(--green-deep);background:var(--green-soft);border:none;border-radius:8px;padding:7px 12px;cursor:pointer;}
   .cf-restore:hover{filter:brightness(.97);}
   .cf-divider{font-size:11.5px;font-weight:700;color:var(--gray-soft);text-transform:uppercase;letter-spacing:.03em;margin:14px 0 4px;padding-top:12px;border-top:1px dashed var(--line);}
+  .exp-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px;}
+  .exp-lbl{font-size:12.5px;font-weight:700;color:var(--gray);}
+  .exp-btn{font-family:inherit;font-size:13px;font-weight:700;color:var(--green-deep);background:var(--green-soft);border:1.5px solid #C7D8FB;border-radius:10px;padding:8px 13px;cursor:pointer;transition:.15s;}
+  .exp-btn:hover{filter:brightness(.97);}
+  .exp-btn:disabled{opacity:.6;cursor:default;}
   .cf-tag.review{background:#FEE2E2;color:#B91C1C;}
   .meta-edit{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
   .meta-lbl{font-size:13px;font-weight:700;color:var(--ink);}
@@ -433,6 +438,11 @@
           <span class="count" id="pendCount">0 por confirmar</span>
         </div>
         <p class="sub">Las donaciones con comprobante entran <b>automáticamente sin marcar</b>. Marca ✓ cuando confirmes que el dinero llegó al banco. La ✕ solo <b>oculta</b> (no borra): puedes restaurarla cuando quieras.</p>
+        <div class="exp-bar">
+          <span class="exp-lbl">Exportar lista:</span>
+          <button class="exp-btn" id="expXlsx">📊 Excel</button>
+          <button class="exp-btn" id="expPdf">📄 PDF</button>
+        </div>
         <div id="confirmList"></div>
         <button class="linklike" id="showDelBtn" style="display:none;margin-top:12px"></button>
       </section>
@@ -722,6 +732,66 @@
     const sd=$("#showDelBtn");sd.style.display=del.length?"inline-block":"none";sd.textContent=del.length?((showDeleted?"Ocultar":"Ver")+" ocultas ("+del.length+")"):"";
   }
   $("#showDelBtn").addEventListener("click",()=>{showDeleted=!showDeleted;renderConfirm();});
+
+  /* ===== Exportar (Excel / PDF) ===== */
+  function loadScript(src){return new Promise((res,rej)=>{if([...document.scripts].some(s=>s.src===src))return res();const sc=document.createElement("script");sc.src=src;sc.onload=()=>res();sc.onerror=()=>rej(new Error("No se pudo cargar "+src));document.head.appendChild(sc);});}
+  function exportRows(){
+    return [...donations].sort((a,b)=>b.date-a.date).map(d=>([
+      new Date(d.date).toLocaleString("es-EC"),
+      d.anon?"Anónimo":(d.name||"Anónimo"),
+      d.amount,
+      d.confirmed?"Confirmada":(d.review?"En revisión":"Por confirmar"),
+      d.source==="manual"?"Manual":"Comprobante",
+      d.deleted?"Oculta":"Pública"
+    ]));
+  }
+  function exportSummary(){const pub=pubDons(),tot=pub.reduce((s,d)=>s+d.amount,0);return {tot,pub:pub.length,pend:donations.filter(d=>!d.deleted&&!d.confirmed).length};}
+  async function exportXlsx(){
+    if(!donations.length){toast("No hay donaciones para exportar.");return;}
+    const b=$("#expXlsx");b.disabled=true;
+    try{
+      await loadScript("https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js");
+      const s=exportSummary();
+      const aoa=[
+        ["Donaciones · Venezuela nos necesita"],
+        ["Generado: "+new Date().toLocaleString("es-EC")],
+        ["Recaudado público: $"+s.tot+"   |   Meta: $"+GOAL+"   |   Públicas: "+s.pub+"   |   Por confirmar: "+s.pend],
+        [],
+        ["Fecha","Nombre","Monto (USD)","Estado","Origen","Visibilidad"],
+        ...exportRows()
+      ];
+      const ws=XLSX.utils.aoa_to_sheet(aoa);
+      ws["!cols"]=[{wch:20},{wch:24},{wch:12},{wch:14},{wch:14},{wch:12}];
+      const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Donaciones");
+      XLSX.writeFile(wb,"donaciones-venezuela.xlsx");
+    }catch(e){console.error(e);toast("No se pudo exportar a Excel.");}
+    b.disabled=false;
+  }
+  async function exportPdf(){
+    if(!donations.length){toast("No hay donaciones para exportar.");return;}
+    const b=$("#expPdf");b.disabled=true;
+    try{
+      await loadScript("https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js");
+      await loadScript("https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js");
+      const {jsPDF}=window.jspdf;const doc=new jsPDF();const s=exportSummary();
+      doc.setFontSize(15);doc.setTextColor(20);doc.text("Donaciones · Venezuela nos necesita",14,16);
+      doc.setFontSize(9);doc.setTextColor(110);
+      doc.text("Generado: "+new Date().toLocaleString("es-EC"),14,22);
+      doc.text("Recaudado público: $"+s.tot+"    Meta: $"+GOAL+"    Públicas: "+s.pub+"    Por confirmar: "+s.pend,14,27);
+      doc.autoTable({
+        startY:32,
+        head:[["Fecha","Nombre","Monto","Estado","Origen","Visib."]],
+        body:exportRows().map(r=>[r[0],r[1],"$"+r[2],r[3],r[4],r[5]]),
+        styles:{fontSize:8,cellPadding:2},
+        headStyles:{fillColor:[29,78,216]},
+        alternateRowStyles:{fillColor:[240,245,255]}
+      });
+      doc.save("donaciones-venezuela.pdf");
+    }catch(e){console.error(e);toast("No se pudo exportar a PDF.");}
+    b.disabled=false;
+  }
+  $("#expXlsx").addEventListener("click",exportXlsx);
+  $("#expPdf").addEventListener("click",exportPdf);
   $("#confirmList").addEventListener("click",async e=>{
     const chk=e.target.closest(".cf-chk");
     if(chk){const id=chk.dataset.id,val=chk.checked;const {error}=await sb.from("donations").update({confirmed:val}).eq("id",id);if(error){console.error(error);chk.checked=!val;toast("No se pudo actualizar.");}else{const d=donations.find(x=>x.id===id);if(d)d.confirmed=val;render();}return;}
