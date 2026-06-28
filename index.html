@@ -116,6 +116,24 @@
   .handle .ig{width:16px;height:16px;opacity:.85;}
 
   /* story / emergency */
+  .story{position:relative;}
+  .story-edit{position:absolute;top:18px;right:18px;font-family:inherit;font-size:12.5px;font-weight:700;
+    color:var(--green-deep);background:var(--green-soft);border:1px solid #D5E2FB;border-radius:9px;
+    padding:6px 10px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;}
+  .story-edit:hover{filter:brightness(.97);}
+  #introBody p{font-size:15px;line-height:1.62;color:#3A443E;font-weight:500;margin:0 0 14px;}
+  .upd-sec{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);}
+  .upd-sec-head h3{margin:0 0 12px;font-size:16px;font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:7px;}
+  .upd-scroll{position:relative;transition:max-height .32s ease;}
+  .upd-scroll.collapsed{max-height:54px;overflow:hidden;}
+  .upd-scroll.collapsed::after{content:"";position:absolute;left:0;right:0;bottom:0;height:42px;
+    background:linear-gradient(rgba(255,255,255,0),#fff);pointer-events:none;}
+  .upd-scroll.expanded{max-height:360px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#D4DAD6 transparent;}
+  .upd-scroll.expanded::-webkit-scrollbar{width:7px;}
+  .upd-scroll.expanded::-webkit-scrollbar-thumb{background:#D4DAD6;border-radius:7px;}
+  .upd-more{margin-top:10px;font-family:inherit;font-size:13px;font-weight:700;color:var(--green-deep);
+    background:none;border:none;cursor:pointer;padding:4px 0;}
+  .upd-more:hover{text-decoration:underline;}
   .story .eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
     color:var(--green-deep);background:var(--green-soft);padding:5px 12px;border-radius:999px;margin-bottom:12px;}
   .story p{font-size:15px;line-height:1.62;color:#3A443E;font-weight:500;margin:0 0 14px;}
@@ -201,7 +219,6 @@
   .prog{order:1;}
   .main{order:2;}
   .donaciones{order:3;}
-  .updates-card{order:4;}
   .cover{margin-bottom:14px;}
   @media (min-width:880px){
     .grid{grid-template-columns:1fr 360px;align-items:start;}
@@ -380,6 +397,11 @@
   .upd-date{font-size:11.5px;font-weight:600;color:var(--gray-soft);margin-top:6px;}
   .upd-del{flex:none;width:26px;height:26px;border:none;background:none;color:var(--gray-soft);font-size:13px;cursor:pointer;border-radius:7px;}
   .upd-del:hover{background:#FEE2E2;color:#EF4444;}
+  .upd-acts{display:flex;gap:2px;flex:none;}
+  .upd-edit{flex:none;width:26px;height:26px;border:none;background:none;color:var(--gray-soft);font-size:12px;cursor:pointer;border-radius:7px;}
+  .upd-edit:hover{background:var(--green-soft);color:var(--green-deep);}
+  .upd-editbox{display:flex;flex-direction:column;gap:9px;width:100%;}
+  .upd-edit-actions{display:flex;gap:14px;align-items:center;}
   .upd-empty{font-size:13.5px;color:var(--gray);font-weight:500;line-height:1.5;}
   .cf-tag.review{background:#FEE2E2;color:#B91C1C;}
   .cf-tag.intl{background:#E0F2FE;color:#075985;}
@@ -461,16 +483,6 @@
           <div class="fade"></div>
         </div>
       </section>
-
-      <!-- ACTUALIZACIONES -->
-      <section class="card updates-card">
-        <div class="dhead"><h2>📣 Actualizaciones</h2></div>
-        <div id="updAdd" style="display:none">
-          <textarea class="upd-input" id="updText" rows="2" placeholder="Escribe una novedad para mostrar a todos…"></textarea>
-          <button class="add" id="updBtn">Publicar actualización</button>
-        </div>
-        <div id="updList"></div>
-      </section>
     </aside>
 
     <!-- MAIN -->
@@ -526,16 +538,29 @@
         <button class="linklike" id="showDelBtn" style="display:none;margin-top:12px"></button>
       </section>
 
-      <section class="card story">
+      <section class="card story" id="storyCard">
         <span class="eyebrow">Emergencia humanitaria</span>
-        <h2>Lo que está pasando</h2>
-        <p>El 24 de junio, dos terremotos golpearon Venezuela con apenas segundos de diferencia. En un país que ya venía cargando años de una crisis profunda: hospitales sin insumos, familias sosteniéndose con lo mínimo y una sociedad completamente abandonada por su gobierno, el sismo convirtió la fragilidad en catástrofe. En instantes miles de personas, muchas de ellas niños, se quedaron sin un lugar seguro donde dormir.</p>
-        <p>Esta campaña responde a esa urgencia de forma <b>directa y sin intermediarios</b>. El 100% de lo recaudado se transfiere a personas de confianza en Venezuela, que compran insumos de primera necesidad y los entregan en mano donde más se necesitan:</p>
+        <button class="story-edit" id="introEdit" title="Editar descripción" style="display:none">✏️ Editar</button>
+        <h2 id="introTitle">Lo que está pasando</h2>
+        <div id="introBody">
+          <p>El 24 de junio, dos terremotos golpearon Venezuela con apenas segundos de diferencia. En un país que ya venía cargando años de una crisis profunda: hospitales sin insumos, familias sosteniéndose con lo mínimo y una sociedad completamente abandonada por su gobierno, el sismo convirtió la fragilidad en catástrofe. En instantes miles de personas, muchas de ellas niños, se quedaron sin un lugar seguro donde dormir.</p>
+          <p>Esta campaña responde a esa urgencia de forma <b>directa y sin intermediarios</b>. El 100% de lo recaudado se transfiere a personas de confianza en Venezuela, que compran insumos de primera necesidad y los entregan en mano donde más se necesitan:</p>
+        </div>
         <div class="dest">
           <div class="dest-item"><span class="ic">🧸</span><div><div class="t">Niños sin hogar</div><div class="d">Abrigo, alimento y cuidado para los niños que quedaron huérfanos o sin un lugar donde vivir.</div></div></div>
           <div class="dest-item"><span class="ic">⚕️</span><div><div class="t">Centros médicos</div><div class="d">Insumos de primeros auxilios para atender a los heridos y colaborar con los centros médicos desabastecidos.</div></div></div>
         </div>
         <div class="transp"><span class="ic">📄</span><div class="t"><b>Transparencia total.</b> Iremos publicando las facturas de cada compra y documentando la entrega de cada donativo. Queremos que veas exactamente en qué se convierte tu aporte: cada dólar con su destino y su comprobante.</div></div>
+
+        <div class="upd-sec" id="updSec" style="display:none">
+          <div class="upd-sec-head"><h3>📣 Actualizaciones</h3></div>
+          <div id="updAdd" style="display:none">
+            <textarea class="upd-input" id="updText" rows="2" placeholder="Escribe una actualización (se publica con fecha y hora)…"></textarea>
+            <button class="add" id="updBtn">Publicar actualización</button>
+          </div>
+          <div class="upd-scroll collapsed" id="updScroll"><div id="updList"></div></div>
+          <button class="upd-more" id="updMore" style="display:none">Leer más ▾</button>
+        </div>
       </section>
 
       <section class="card" id="instrucciones">
@@ -692,6 +717,21 @@
   <button class="lb-arrow lb-next" id="lbNext" aria-label="Siguiente">›</button>
 </div>
 
+<!-- EDITOR DE DESCRIPCIÓN -->
+<div class="modal-overlay" id="introEditor">
+  <div class="modal">
+    <button class="modal-x" id="introClose" aria-label="Cerrar">✕</button>
+    <h2>Editar descripción</h2>
+    <div class="step-h">Título</div>
+    <input class="upd-input" id="introTitleInp" type="text" placeholder="Título de la sección" />
+    <div class="step-h" style="margin-top:14px">Texto</div>
+    <textarea class="upd-input" id="introBodyInp" rows="9" placeholder="Escribe la descripción…"></textarea>
+    <p class="ev-hint" style="margin-top:8px">Deja una línea en blanco para separar párrafos. Escribe <b>**así**</b> para poner algo en negrita.</p>
+    <button class="btn btn-primary" id="introSave" style="width:100%;margin-top:6px">Guardar descripción</button>
+    <div class="msg" id="introMsg"></div>
+  </div>
+</div>
+
 <!-- EDITOR DE ÁLBUM -->
 <div class="modal-overlay" id="albEditor">
   <div class="modal">
@@ -728,6 +768,7 @@
   const $$ = s => document.querySelectorAll(s);
   const slug = s => ((s||"file").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9.]+/g,"-").replace(/^-+|-+$/g,"").toLowerCase()||"archivo");
   const fdate = ts => new Date(ts).toLocaleDateString("es-EC",{day:"numeric",month:"short",year:"numeric"});
+  const fdt = ts => new Date(ts).toLocaleString("es-EC",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
 
   let donations=[], sortMode="destacadas", freshId=null, isAdmin=false, evidencia=[], adminOpen=false, showDeleted=false, updates=[], albKind=null, albKey=null;
   let ocrToken=0, ocrPromise=null, ocrText=null, ocrAnalyzed=false, curPreviewUrl=null;
@@ -932,21 +973,73 @@
   $("#albClose").addEventListener("click",closeAlbumEditor);
   $("#albEditor").addEventListener("click",e=>{if(e.target.id==="albEditor")closeAlbumEditor();});
 
-  /* ===== Actualizaciones ===== */
+  /* ===== Descripción editable + Actualizaciones ===== */
   const esc=s=>(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const INTRO_T_DEF="Lo que está pasando";
+  const INTRO_B_DEF="El 24 de junio, dos terremotos golpearon Venezuela con apenas segundos de diferencia. En un país que ya venía cargando años de una crisis profunda: hospitales sin insumos, familias sosteniéndose con lo mínimo y una sociedad completamente abandonada por su gobierno, el sismo convirtió la fragilidad en catástrofe. En instantes miles de personas, muchas de ellas niños, se quedaron sin un lugar seguro donde dormir.\n\nEsta campaña responde a esa urgencia de forma **directa y sin intermediarios**. El 100% de lo recaudado se transfiere a personas de confianza en Venezuela, que compran insumos de primera necesidad y los entregan en mano donde más se necesitan:";
+  let introTitle=INTRO_T_DEF, introBody=INTRO_B_DEF;
+  const mdInline=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>");
+  function renderIntro(){
+    $("#introTitle").textContent=introTitle;
+    $("#introBody").innerHTML=introBody.split(/\n\s*\n/).map(p=>`<p>${mdInline(p)}</p>`).join("");
+    $("#introEdit").style.display=(adminOpen&&isAdmin)?"inline-flex":"none";
+  }
+  async function loadIntro(){
+    try{const {data}=await sb.from("site_content").select("key,value").in("key",["intro_title","intro_body"]);
+      (data||[]).forEach(r=>{if(r.key==="intro_title"&&r.value!=null)introTitle=r.value;if(r.key==="intro_body"&&r.value!=null)introBody=r.value;});
+    }catch(e){console.warn(e);}
+    renderIntro();
+  }
+  $("#introEdit").addEventListener("click",()=>{
+    $("#introTitleInp").value=introTitle;$("#introBodyInp").value=introBody;
+    $("#introMsg").textContent="";
+    $("#introEditor").classList.add("show");document.body.style.overflow="hidden";
+  });
+  function closeIntro(){$("#introEditor").classList.remove("show");document.body.style.overflow="";}
+  $("#introClose").addEventListener("click",closeIntro);
+  $("#introEditor").addEventListener("click",e=>{if(e.target.id==="introEditor")closeIntro();});
+  $("#introSave").addEventListener("click",async()=>{
+    const t=$("#introTitleInp").value.trim(),b=$("#introBodyInp").value.trim();
+    if(!t||!b){$("#introMsg").textContent="El título y el texto no pueden quedar vacíos.";return;}
+    $("#introSave").disabled=true;
+    const {error}=await sb.from("site_content").upsert([{key:"intro_title",value:t},{key:"intro_body",value:b}]);
+    $("#introSave").disabled=false;
+    if(error){console.error(error);$("#introMsg").textContent="No se pudo guardar.";return;}
+    introTitle=t;introBody=b;renderIntro();closeIntro();toast("Descripción actualizada");
+  });
+  try{sb.channel("content-rt").on("postgres_changes",{event:"*",schema:"public",table:"site_content"},()=>loadIntro()).subscribe();}catch(e){}
+
   async function loadUpdates(){
     const {data,error}=await sb.from("updates").select("*").order("created_at",{ascending:false});
     if(error){console.error(error);return;}
     updates=data||[];renderUpdates();
   }
+  let updEditId=null;
   function renderUpdates(){
-    const admin=adminOpen&&isAdmin;
-    if(!updates.length){$("#updList").innerHTML='<div class="upd-empty">Aún no hay actualizaciones.</div>';return;}
+    const admin=adminOpen&&isAdmin, sec=$("#updSec"), scroll=$("#updScroll"), more=$("#updMore");
+    if(!updates.length&&!admin){sec.style.display="none";return;}
+    sec.style.display="block";
+    if(!updates.length){
+      $("#updList").innerHTML='<div class="upd-empty">Aún no hay actualizaciones. Publica la primera.</div>';
+      more.style.display="none";scroll.classList.remove("collapsed","expanded");return;
+    }
     $("#updList").innerHTML=updates.map(u=>{
-      const del=admin?`<button class="upd-del" data-id="${u.id}" title="Borrar">✕</button>`:"";
-      return `<div class="upd-item"><div class="upd-main"><div class="upd-body">${esc(u.body).replace(/\n/g,"<br>")}</div><div class="upd-date">${fdate(u.created_at)}</div></div>${del}</div>`;
+      if(admin&&u.id===updEditId){
+        return `<div class="upd-item"><div class="upd-editbox"><textarea class="upd-input" id="updEditText" rows="3">${esc(u.body)}</textarea><div class="upd-edit-actions"><button class="add" data-act="save" data-id="${u.id}">Guardar</button><span class="linklike" data-act="cancel">Cancelar</span></div></div></div>`;
+      }
+      const acts=admin?`<div class="upd-acts"><button class="upd-edit" data-id="${u.id}" title="Editar">✏️</button><button class="upd-del" data-id="${u.id}" title="Borrar">✕</button></div>`:"";
+      return `<div class="upd-item"><div class="upd-main"><div class="upd-body">${esc(u.body).replace(/\n/g,"<br>")}</div><div class="upd-date">🕒 ${fdt(u.created_at)}</div></div>${acts}</div>`;
     }).join("");
+    more.style.display="inline-block";
+    if(updEditId){scroll.classList.add("expanded");scroll.classList.remove("collapsed");more.textContent="Leer menos ▴";}
+    else if(!scroll.classList.contains("expanded")){scroll.classList.add("collapsed");more.textContent="Leer más ▾";}
   }
+  $("#updMore").addEventListener("click",()=>{
+    const s=$("#updScroll"),exp=s.classList.toggle("expanded");
+    s.classList.toggle("collapsed",!exp);
+    $("#updMore").textContent=exp?"Leer menos ▴":"Leer más ▾";
+    if(exp)s.scrollTop=0;
+  });
   sb.channel("updates-rt").on("postgres_changes",{event:"*",schema:"public",table:"updates"},()=>loadUpdates()).subscribe();
   $("#updBtn").addEventListener("click",async()=>{
     const body=$("#updText").value.trim();
@@ -958,11 +1051,25 @@
     $("#updText").value="";toast("Actualización publicada");
   });
   $("#updList").addEventListener("click",async e=>{
+    if(!isAdmin||!adminOpen)return;
+    const ed=e.target.closest(".upd-edit");
+    if(ed){updEditId=ed.dataset.id;renderUpdates();const t=$("#updEditText");if(t){t.focus();t.setSelectionRange(t.value.length,t.value.length);}return;}
+    const save=e.target.closest('[data-act="save"]');
+    if(save){
+      const body=$("#updEditText").value.trim();
+      if(!body){$("#updEditText").focus();return;}
+      save.disabled=true;
+      const {error}=await sb.from("updates").update({body}).eq("id",save.dataset.id);
+      if(error){console.error(error);toast("No se pudo guardar.");save.disabled=false;return;}
+      updEditId=null;toast("Actualización editada");await loadUpdates();return;
+    }
+    if(e.target.closest('[data-act="cancel"]')){updEditId=null;renderUpdates();return;}
     const del=e.target.closest(".upd-del");
-    if(!del||!isAdmin||!adminOpen)return;
-    if(!confirm("¿Borrar esta actualización?"))return;
-    const {error}=await sb.from("updates").delete().eq("id",del.dataset.id);
-    if(error){console.error(error);toast("No se pudo borrar.");}
+    if(del){
+      if(!confirm("¿Borrar esta actualización?"))return;
+      const {error}=await sb.from("updates").delete().eq("id",del.dataset.id);
+      if(error){console.error(error);toast("No se pudo borrar.");}
+    }
   });
 
   /* ===== Confirmar transacciones (admin) ===== */
@@ -1177,7 +1284,7 @@
     $("#confirmCard").style.display=tools?"block":"none";
     $("#updAdd").style.display=tools?"flex":"none";
     if(tools)$("#dDate").value=new Date().toISOString().slice(0,10);
-    renderList();renderEvidencia();renderConfirm();renderUpdates();
+    renderList();renderEvidencia();renderConfirm();renderUpdates();renderIntro();
   }
 
   sb.auth.onAuthStateChange((_e,session)=>{const email=session?.user?.email||"";isAdmin=ADMIN_EMAILS.includes(email);if(isAdmin)$("#who").textContent=email;setAdminUI();});
@@ -1256,6 +1363,7 @@
     await load();
     await loadEvidencia();
     await loadUpdates();
+    await loadIntro();
   })();
 </script>
 </body>
