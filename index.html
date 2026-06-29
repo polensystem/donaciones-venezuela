@@ -285,24 +285,51 @@
   .ev-item{cursor:pointer;}
 
   /* visor / galería */
-  .lb-overlay{position:fixed;inset:0;background:rgba(8,12,22,.92);display:none;align-items:center;justify-content:center;z-index:80;padding:20px;}
+  .lb-overlay{position:fixed;inset:0;background:rgba(8,12,22,.93);display:none;align-items:center;justify-content:center;z-index:80;padding:24px 84px;}
   .lb-overlay.show{display:flex;}
-  .lb-stage{max-width:900px;width:100%;display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .lb-panel{max-width:1000px;width:100%;display:flex;flex-direction:column;gap:14px;}
+  .lb-top{display:flex;gap:12px;align-items:stretch;justify-content:center;}
+  .lb-thumbs{display:flex;flex-direction:column;gap:8px;width:78px;flex:none;max-height:72vh;overflow-y:auto;padding-right:2px;scrollbar-width:thin;scrollbar-color:#5b6472 transparent;}
+  .lb-thumbs::-webkit-scrollbar{width:6px;}.lb-thumbs::-webkit-scrollbar-thumb{background:#5b6472;border-radius:6px;}
+  .lb-thumb{flex:none;width:72px;height:72px;border-radius:10px;overflow:hidden;border:2px solid transparent;background:#fff;cursor:pointer;padding:0;opacity:.55;transition:opacity .15s,border-color .15s;}
+  .lb-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .lb-thumb.active{opacity:1;border-color:var(--green);}
+  .lb-thumb:hover{opacity:1;}
+  .lb-th-doc{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:24px;background:#EDF1EE;}
+  .lb-main{position:relative;flex:1;min-width:0;display:flex;align-items:center;justify-content:center;}
   .lb-media{width:100%;display:flex;align-items:center;justify-content:center;}
   .lb-media img{max-width:100%;max-height:72vh;border-radius:14px;box-shadow:0 16px 50px rgba(0,0,0,.5);object-fit:contain;background:#fff;}
   .lb-doc{background:#fff;border-radius:18px;padding:42px 32px;display:flex;flex-direction:column;align-items:center;gap:16px;}
   .lb-doc-ic{font-size:48px;}
   .lb-doc-btn{background:var(--green-deep);color:#fff;font-family:inherit;font-weight:800;font-size:15px;text-decoration:none;padding:12px 22px;border-radius:12px;}
-  .lb-cap{text-align:center;color:#fff;max-width:640px;}
-  .lb-caption{font-size:16px;font-weight:700;line-height:1.4;}
-  .lb-date{font-size:13px;opacity:.7;margin-top:4px;}
-  .lb-count{font-size:12px;opacity:.6;margin-top:9px;font-weight:700;letter-spacing:.05em;}
-  .lb-x{position:absolute;top:16px;right:18px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:17px;cursor:pointer;}
+  .lb-cap{text-align:center;color:#fff;max-width:680px;margin:0 auto;}
+  .lb-caption{font-size:16px;font-weight:700;line-height:1.45;}
+  .lb-date{font-size:13px;opacity:.72;margin-top:4px;}
+  .lb-logpos{font-size:11.5px;opacity:.6;margin-top:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+  .lb-count{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:700;padding:4px 11px;border-radius:999px;letter-spacing:.05em;}
+  .lb-x{position:absolute;top:16px;right:18px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:17px;cursor:pointer;z-index:3;}
   .lb-x:hover{background:rgba(255,255,255,.26);}
-  .lb-arrow{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;border:none;background:rgba(255,255,255,.16);color:#fff;font-size:30px;line-height:1;cursor:pointer;align-items:center;justify-content:center;}
-  .lb-arrow:hover{background:rgba(255,255,255,.3);}
-  .lb-prev{left:14px;}.lb-next{right:14px;}
-  @media(max-width:560px){.lb-arrow{width:42px;height:42px;font-size:24px;}.lb-prev{left:6px;}.lb-next{right:6px;}.lb-x{top:10px;right:10px;}.lb-caption{font-size:14.5px;}}
+  .lb-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:none;background:rgba(0,0,0,.45);color:#fff;font-size:26px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
+  .lb-arrow:hover{background:rgba(0,0,0,.66);}
+  .lb-prev{left:10px;}.lb-next{right:10px;}
+  .lb-log{position:absolute;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;border:none;background:none;color:#fff;cursor:pointer;z-index:2;opacity:.82;font-family:inherit;}
+  .lb-log:hover{opacity:1;}
+  .lb-log .chev{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:700;}
+  .lb-log:hover .chev{background:rgba(255,255,255,.3);}
+  .lb-log .lbl{font-size:10.5px;font-weight:700;letter-spacing:.04em;opacity:.85;}
+  .lb-log-prev{left:16px;}.lb-log-next{right:16px;}
+  @media(max-width:760px){
+    .lb-overlay{padding:16px 10px;}
+    .lb-top{flex-direction:column-reverse;align-items:center;gap:10px;}
+    .lb-thumbs{flex-direction:row;width:100%;max-height:none;overflow-x:auto;overflow-y:hidden;padding:0 0 4px;}
+    .lb-thumb{width:56px;height:56px;}
+    .lb-media img{max-height:54vh;}
+    .lb-x{top:10px;right:10px;}.lb-caption{font-size:14.5px;}
+    .lb-arrow{width:38px;height:38px;font-size:22px;}
+    .lb-log{top:auto;bottom:12px;transform:none;}
+    .lb-log .chev{width:42px;height:42px;font-size:21px;}.lb-log .lbl{display:none;}
+    .lb-log-prev{left:6px;}.lb-log-next{right:6px;}
+  }
 
   /* uploader */
   .field-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:11px;}
@@ -402,6 +429,8 @@
   .upd-edit:hover{background:var(--green-soft);color:var(--green-deep);}
   .upd-editbox{display:flex;flex-direction:column;gap:9px;width:100%;}
   .upd-edit-actions{display:flex;gap:14px;align-items:center;}
+  .upd-dt{font-family:inherit;font-size:13.5px;font-weight:600;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;max-width:230px;}
+  .upd-dt-lbl{font-size:12px;font-weight:700;color:var(--gray);margin-bottom:-3px;}
   .upd-empty{font-size:13.5px;color:var(--gray);font-weight:500;line-height:1.5;}
   .cf-tag.review{background:#FEE2E2;color:#B91C1C;}
   .cf-tag.intl{background:#E0F2FE;color:#075985;}
@@ -555,7 +584,9 @@
         <div class="upd-sec" id="updSec" style="display:none">
           <div class="upd-sec-head"><h3>📣 Actualizaciones</h3></div>
           <div id="updAdd" style="display:none">
-            <textarea class="upd-input" id="updText" rows="2" placeholder="Escribe una actualización (se publica con fecha y hora)…"></textarea>
+            <textarea class="upd-input" id="updText" rows="2" placeholder="Escribe una actualización…"></textarea>
+            <label class="upd-dt-lbl">Fecha y hora (opcional, por defecto ahora)</label>
+            <input type="datetime-local" class="upd-dt" id="updDate" />
             <button class="add" id="updBtn">Publicar actualización</button>
           </div>
           <div class="upd-scroll collapsed" id="updScroll"><div id="updList"></div></div>
@@ -705,16 +736,24 @@
 <!-- VISOR / GALERÍA -->
 <div class="lb-overlay" id="lightbox">
   <button class="lb-x" id="lbClose" aria-label="Cerrar">✕</button>
-  <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Anterior">‹</button>
-  <div class="lb-stage">
-    <div class="lb-media" id="lbMedia"></div>
+  <button class="lb-log lb-log-prev" id="lbLogPrev" aria-label="Registro anterior"><span class="chev">‹</span><span class="lbl">Registro<br>anterior</span></button>
+  <div class="lb-panel">
+    <div class="lb-top">
+      <div class="lb-thumbs" id="lbThumbs"></div>
+      <div class="lb-main">
+        <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Foto anterior">‹</button>
+        <div class="lb-media" id="lbMedia"></div>
+        <button class="lb-arrow lb-next" id="lbNext" aria-label="Foto siguiente">›</button>
+        <div class="lb-count" id="lbCount"></div>
+      </div>
+    </div>
     <div class="lb-cap">
       <div class="lb-caption" id="lbCaption"></div>
       <div class="lb-date" id="lbDate"></div>
-      <div class="lb-count" id="lbCount"></div>
+      <div class="lb-logpos" id="lbLogPos"></div>
     </div>
   </div>
-  <button class="lb-arrow lb-next" id="lbNext" aria-label="Siguiente">›</button>
+  <button class="lb-log lb-log-next" id="lbLogNext" aria-label="Registro siguiente"><span class="chev">›</span><span class="lbl">Registro<br>siguiente</span></button>
 </div>
 
 <!-- EDITOR DE DESCRIPCIÓN -->
@@ -863,7 +902,7 @@
   }
   function evCover(e){return isImg(e.file_path)?`<img src="${evUrl(e.file_path)}" alt="" loading="lazy">`:`<div class="ev-doc"><span class="ico">🧾</span><span><span class="dt">Documento</span><span class="dd">PDF</span></span></div>`;}
   function renderEvidencia(){
-    const groups=[...evGroups("factura"),...evGroups("foto")].sort((a,b)=>a.date<b.date?1:-1), admin=adminOpen&&isAdmin;
+    const groups=allGroups(), admin=adminOpen&&isAdmin;
     $("#evCount").textContent=groups.length;
     const card=(g)=>{
       const defCap=g.kind==="factura"?"Factura de compra":"Entrega de donativos";
@@ -879,27 +918,48 @@
   sb.channel("evidencia-rt").on("postgres_changes",{event:"*",schema:"public",table:"evidencia"},()=>loadEvidencia()).subscribe();
 
   /* ===== Visor / galería por álbum ===== */
-  let lbItems=[], lbIndex=0, lbCaption="";
+  let lbItems=[], lbIndex=0, lbCaption="", lbGroups=[], lbGroupIdx=0;
+  function allGroups(){return [...evGroups("factura"),...evGroups("foto")].sort((a,b)=>a.date<b.date?1:-1);}
   function openGroup(kind,gkey){
-    const g=evGroups(kind).find(x=>x.key===String(gkey));if(!g)return;
-    lbItems=g.items;lbIndex=0;lbCaption=g.caption||(kind==="factura"?"Factura de compra":"Entrega de donativos");
-    renderLightbox();$("#lightbox").classList.add("show");document.body.style.overflow="hidden";
+    const groups=allGroups(), idx=groups.findIndex(x=>x.key===String(gkey));
+    if(idx<0)return;
+    lbGroups=groups;lbGroupIdx=idx;lbLoadGroup();
+    $("#lightbox").classList.add("show");document.body.style.overflow="hidden";
   }
-  function closeLightbox(){$("#lightbox").classList.remove("show");document.body.style.overflow="";$("#lbMedia").innerHTML="";}
+  function lbLoadGroup(){
+    const g=lbGroups[lbGroupIdx];if(!g)return;
+    lbItems=g.items;lbIndex=0;
+    lbCaption=g.caption||(g.kind==="factura"?"Factura de compra":"Entrega de donativos");
+    renderLightbox();
+  }
+  function closeLightbox(){$("#lightbox").classList.remove("show");document.body.style.overflow="";$("#lbMedia").innerHTML="";$("#lbThumbs").innerHTML="";}
   function lbGo(dir){if(lbItems.length<2)return;lbIndex=(lbIndex+dir+lbItems.length)%lbItems.length;renderLightbox();}
+  function lbLogGo(dir){if(lbGroups.length<2)return;lbGroupIdx=(lbGroupIdx+dir+lbGroups.length)%lbGroups.length;lbLoadGroup();}
   function renderLightbox(){
-    const e=lbItems[lbIndex];if(!e)return;const u=evUrl(e.file_path);
+    const e=lbItems[lbIndex];if(!e)return;const u=evUrl(e.file_path),multi=lbItems.length>1,multiG=lbGroups.length>1;
     $("#lbMedia").innerHTML=isImg(e.file_path)?`<img src="${u}" alt="">`:`<div class="lb-doc"><div class="lb-doc-ic">🧾</div><a class="lb-doc-btn" href="${u}" target="_blank" rel="noopener">Abrir archivo (PDF)</a></div>`;
+    $("#lbThumbs").style.display=multi?"":"none";
+    $("#lbThumbs").innerHTML=multi?lbItems.map((it,i)=>{
+      const inner=isImg(it.file_path)?`<img src="${evUrl(it.file_path)}" alt="">`:`<div class="lb-th-doc">🧾</div>`;
+      return `<button class="lb-thumb${i===lbIndex?" active":""}" data-i="${i}" aria-label="Foto ${i+1}">${inner}</button>`;
+    }).join(""):"";
     $("#lbCaption").textContent=lbCaption;
     $("#lbDate").textContent=fdate(e.created_at);
-    $("#lbCount").textContent=lbItems.length>1?(lbIndex+1)+" / "+lbItems.length:"";
-    const multi=lbItems.length>1;$("#lbPrev").style.display=multi?"flex":"none";$("#lbNext").style.display=multi?"flex":"none";
+    $("#lbCount").textContent=multi?(lbIndex+1)+" / "+lbItems.length:"";
+    $("#lbCount").style.display=multi?"":"none";
+    $("#lbPrev").style.display=multi?"flex":"none";$("#lbNext").style.display=multi?"flex":"none";
+    $("#lbLogPrev").style.display=multiG?"flex":"none";$("#lbLogNext").style.display=multiG?"flex":"none";
+    $("#lbLogPos").textContent=multiG?("Registro "+(lbGroupIdx+1)+" de "+lbGroups.length):"";
+    const at=$("#lbThumbs").querySelector(".lb-thumb.active");if(at)at.scrollIntoView({block:"nearest",inline:"nearest"});
   }
+  $("#lbThumbs").addEventListener("click",e=>{const t=e.target.closest(".lb-thumb");if(!t)return;lbIndex=+t.dataset.i;renderLightbox();});
   $("#lbPrev").addEventListener("click",()=>lbGo(-1));
   $("#lbNext").addEventListener("click",()=>lbGo(1));
+  $("#lbLogPrev").addEventListener("click",()=>lbLogGo(-1));
+  $("#lbLogNext").addEventListener("click",()=>lbLogGo(1));
   $("#lbClose").addEventListener("click",closeLightbox);
   $("#lightbox").addEventListener("click",e=>{if(e.target.id==="lightbox")closeLightbox();});
-  document.addEventListener("keydown",e=>{if(!$("#lightbox").classList.contains("show"))return;if(e.key==="Escape")closeLightbox();else if(e.key==="ArrowLeft")lbGo(-1);else if(e.key==="ArrowRight")lbGo(1);});
+  document.addEventListener("keydown",e=>{if(!$("#lightbox").classList.contains("show"))return;if(e.key==="Escape")closeLightbox();else if(e.key==="ArrowLeft"){e.shiftKey?lbLogGo(-1):lbGo(-1);}else if(e.key==="ArrowRight"){e.shiftKey?lbLogGo(1):lbGo(1);}});
   $("#evGrid").addEventListener("click",e=>{if(e.target.closest(".ev-del"))return;const ed=e.target.closest(".ev-edit");if(ed){openAlbumEditor(ed.dataset.kind,ed.dataset.group);return;}const it=e.target.closest(".ev-item");if(!it)return;openGroup(it.dataset.kind,it.dataset.group);});
 
   /* ===== Editor de álbum (admin) ===== */
@@ -1015,6 +1075,7 @@
     updates=data||[];renderUpdates();
   }
   let updEditId=null;
+  const toLocalInput=ts=>{const d=new Date(ts),p=n=>String(n).padStart(2,"0");return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"T"+p(d.getHours())+":"+p(d.getMinutes());};
   function renderUpdates(){
     const admin=adminOpen&&isAdmin, sec=$("#updSec"), scroll=$("#updScroll"), more=$("#updMore");
     if(!updates.length&&!admin){sec.style.display="none";return;}
@@ -1025,7 +1086,7 @@
     }
     $("#updList").innerHTML=updates.map(u=>{
       if(admin&&u.id===updEditId){
-        return `<div class="upd-item"><div class="upd-editbox"><textarea class="upd-input" id="updEditText" rows="3">${esc(u.body)}</textarea><div class="upd-edit-actions"><button class="add" data-act="save" data-id="${u.id}">Guardar</button><span class="linklike" data-act="cancel">Cancelar</span></div></div></div>`;
+        return `<div class="upd-item"><div class="upd-editbox"><textarea class="upd-input" id="updEditText" rows="3">${esc(u.body)}</textarea><label class="upd-dt-lbl">Fecha y hora</label><input type="datetime-local" class="upd-dt" id="updEditDate" value="${toLocalInput(u.created_at)}"><div class="upd-edit-actions"><button class="add" data-act="save" data-id="${u.id}">Guardar</button><span class="linklike" data-act="cancel">Cancelar</span></div></div></div>`;
       }
       const acts=admin?`<div class="upd-acts"><button class="upd-edit" data-id="${u.id}" title="Editar">✏️</button><button class="upd-del" data-id="${u.id}" title="Borrar">✕</button></div>`:"";
       return `<div class="upd-item"><div class="upd-main"><div class="upd-body">${esc(u.body).replace(/\n/g,"<br>")}</div><div class="upd-date">🕒 ${fdt(u.created_at)}</div></div>${acts}</div>`;
@@ -1045,10 +1106,11 @@
     const body=$("#updText").value.trim();
     if(!body){$("#updText").focus();return;}
     $("#updBtn").disabled=true;
-    const {error}=await sb.from("updates").insert({body});
+    const row={body};const dv=$("#updDate").value;if(dv)row.created_at=new Date(dv).toISOString();
+    const {error}=await sb.from("updates").insert(row);
     $("#updBtn").disabled=false;
     if(error){console.error(error);toast("No se pudo publicar.");return;}
-    $("#updText").value="";toast("Actualización publicada");
+    $("#updText").value="";$("#updDate").value="";toast("Actualización publicada");
   });
   $("#updList").addEventListener("click",async e=>{
     if(!isAdmin||!adminOpen)return;
@@ -1058,8 +1120,9 @@
     if(save){
       const body=$("#updEditText").value.trim();
       if(!body){$("#updEditText").focus();return;}
+      const patch={body};const dv=$("#updEditDate").value;if(dv)patch.created_at=new Date(dv).toISOString();
       save.disabled=true;
-      const {error}=await sb.from("updates").update({body}).eq("id",save.dataset.id);
+      const {error}=await sb.from("updates").update(patch).eq("id",save.dataset.id);
       if(error){console.error(error);toast("No se pudo guardar.");save.disabled=false;return;}
       updEditId=null;toast("Actualización editada");await loadUpdates();return;
     }
