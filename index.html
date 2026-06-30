@@ -116,6 +116,38 @@
   .handle .ig{width:16px;height:16px;opacity:.85;}
 
   /* story / emergency */
+  .exec-head{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .exec-head h2{margin:0;font-size:17px;font-weight:800;letter-spacing:-.01em;}
+  .exec-head .story-edit{position:static;}
+  .exec-top{margin:8px 0 12px;}
+  .exec-spent-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+  .exec-spent{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1;}
+  .exec-spent-lbl{font-size:14px;font-weight:700;color:var(--ink);}
+  .exec-sub{font-size:13px;color:var(--gray);font-weight:600;margin-top:5px;}
+  .exec-bar{display:flex;width:100%;height:22px;border-radius:7px;overflow:hidden;background:#E8ECEF;}
+  .exec-seg{height:100%;min-width:2px;}
+  .exec-seg+.exec-seg{box-shadow:inset 1px 0 0 rgba(255,255,255,.65);}
+  .exec-free{height:100%;display:flex;align-items:center;justify-content:flex-end;}
+  .exec-free-lbl{font-size:11px;font-weight:800;color:#64748B;padding-right:8px;white-space:nowrap;}
+  .exec-legend{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
+  .exec-leg,.exec-remain{display:flex;align-items:center;gap:9px;font-size:13.5px;}
+  .exec-leg .dot,.exec-remain .dot{width:11px;height:11px;border-radius:3px;flex:none;}
+  .exec-leg .ln,.exec-remain .ln{font-weight:600;color:var(--ink);flex:1;min-width:0;}
+  .exec-leg .la,.exec-remain .la{font-weight:800;color:var(--ink);}
+  .exec-remain{margin-top:11px;padding-top:11px;border-top:1px solid var(--line);}
+  .exec-remain .ln{color:var(--gray);}
+  .exec-goals{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);}
+  .exec-goals-h{font-size:14px;font-weight:800;margin-bottom:10px;}
+  .exec-goal{position:relative;padding-left:20px;font-size:13.5px;color:#3A443E;font-weight:500;line-height:1.5;margin-bottom:8px;}
+  .exec-goal::before{content:"›";position:absolute;left:5px;top:-1px;color:var(--green-deep);font-weight:800;}
+  .exec-empty{font-size:12.5px;color:var(--gray-soft);font-weight:500;}
+  .exec-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .exec-row-dot{width:12px;height:12px;border-radius:4px;flex:none;}
+  .exec-row-n{flex:1;min-width:0;font-family:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:9px 10px;}
+  .exec-row-amt{width:108px;flex:none;}
+  .exec-row-del{flex:none;width:30px;height:30px;border:none;background:none;color:var(--gray-soft);font-size:14px;cursor:pointer;border-radius:8px;}
+  .exec-row-del:hover{background:#FEE2E2;color:#EF4444;}
+  /* story / emergency original */
   .story{position:relative;}
   .story-edit{position:absolute;top:18px;right:18px;font-family:inherit;font-size:12.5px;font-weight:700;
     color:var(--green-deep);background:var(--green-soft);border:1px solid #D5E2FB;border-radius:9px;
@@ -139,7 +171,7 @@
   .story p{font-size:15px;line-height:1.62;color:#3A443E;font-weight:500;margin:0 0 14px;}
   .story p:last-of-type{margin-bottom:0;}
   .dest{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 16px;}
-  .dest-item{display:flex;gap:11px;align-items:flex-start;background:#F7FAF8;border:1px solid var(--line);
+  .dest-item{display:flex;gap:11px;align-items:center;background:#F7FAF8;border:1px solid var(--line);
     border-radius:14px;padding:13px;}
   .dest-item .ic{font-size:22px;line-height:1;flex:none;}
   .dest-item .t{font-size:14px;font-weight:800;margin-bottom:2px;letter-spacing:-.01em;}
@@ -149,6 +181,10 @@
   .transp .t{font-size:13.5px;font-weight:600;color:#1D5B42;line-height:1.5;}
   .transp .t b{font-weight:800;color:var(--green-deep);}
   @media (max-width:480px){.dest{grid-template-columns:1fr;}}
+  .how-steps{margin:8px 0 14px;padding:0;list-style:none;counter-reset:step;}
+  .how-steps li{position:relative;padding:3px 0 0 40px;margin-bottom:12px;font-size:14px;color:var(--ink);font-weight:500;line-height:1.5;counter-increment:step;}
+  .how-steps li:last-child{margin-bottom:0;}
+  .how-steps li::before{content:counter(step);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--green-soft);color:var(--green-deep);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;}
 
   /* donations */
   .dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;}
@@ -214,16 +250,24 @@
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
   .main{display:flex;flex-direction:column;gap:18px;}
-  /* en móvil la columna derecha se "disuelve" para intercalar el orden */
-  .rail{display:contents;}
-  .prog{order:1;}
-  .main{order:2;}
-  .donaciones{order:3;}
   .cover{margin-bottom:14px;}
+  /* en móvil las dos columnas se "disuelven" para intercalar el orden */
+  @media (max-width:879px){
+    .rail{display:contents;}
+    .main{display:contents;}
+    .prog{order:1;}
+    .donaciones{order:2;}
+    .exec{order:3;}
+    #adminPanel{order:4;}
+    #confirmCard{order:5;}
+    #storyCard{order:6;}
+    #instrucciones{order:7;}
+    #sigueCard{order:8;}
+  }
   @media (min-width:880px){
     .grid{grid-template-columns:1fr 360px;align-items:start;}
     .rail{display:flex;flex-direction:column;gap:18px;grid-column:2;grid-row:1;}
-    .main{grid-column:1;grid-row:1;}
+    .main{display:flex;flex-direction:column;gap:18px;grid-column:1;grid-row:1;}
   }
 
   /* ===== menú / vistas ===== */
@@ -503,13 +547,29 @@
           <span class="count" id="count2">0</span>
         </div>
         <div class="seg" role="tablist">
-          <button class="active" data-sort="destacadas">Destacadas</button>
-          <button data-sort="recientes">Recientes</button>
+          <button data-sort="destacadas">Destacadas</button>
+          <button class="active" data-sort="recientes">Recientes</button>
           <button data-sort="az">A–Z</button>
         </div>
         <div class="list-shell">
           <div class="list" id="list"></div>
           <div class="fade"></div>
+        </div>
+      </section>
+
+      <section class="card exec" id="execCard" style="display:none">
+        <div class="exec-head"><h2>💸 En qué se está usando</h2>
+          <button class="story-edit" id="execEdit" title="Editar ejecución" style="display:none">✏️ Editar</button></div>
+        <div class="exec-top">
+          <div class="exec-spent-row"><span class="exec-spent" id="execSpent">$0</span><span class="exec-spent-lbl">ya utilizados</span></div>
+          <div class="exec-sub">de <b id="execRaised">$0</b> recaudados</div>
+        </div>
+        <div class="exec-bar" id="execBar"></div>
+        <div class="exec-legend" id="execLegend"></div>
+        <div class="exec-remain" id="execRemain"></div>
+        <div class="exec-goals" id="execGoals">
+          <div class="exec-goals-h">🎯 Próximos objetivos</div>
+          <div id="execGoalsBody"></div>
         </div>
       </section>
     </aside>
@@ -572,12 +632,14 @@
         <button class="story-edit" id="introEdit" title="Editar descripción" style="display:none">✏️ Editar</button>
         <h2 id="introTitle">Lo que está pasando</h2>
         <div id="introBody">
-          <p>El 24 de junio, dos terremotos golpearon Venezuela con apenas segundos de diferencia. En un país que ya venía cargando años de una crisis profunda: hospitales sin insumos, familias sosteniéndose con lo mínimo y una sociedad completamente abandonada por su gobierno, el sismo convirtió la fragilidad en catástrofe. En instantes miles de personas, muchas de ellas niños, se quedaron sin un lugar seguro donde dormir.</p>
-          <p>Esta campaña responde a esa urgencia de forma <b>directa y sin intermediarios</b>. El 100% de lo recaudado se transfiere a personas de confianza en Venezuela, que compran insumos de primera necesidad y los entregan en mano donde más se necesitan:</p>
+          <p>El 24 de junio dos terremotos golpearon Venezuela con apenas segundos de diferencia. En un país que ya venía cargando años de una crisis profunda; hospitales sin insumos y familias sosteniéndose con lo mínimo, el terremoto convirtió la fragilidad en catástrofe.</p>
+          <p>Esta recaudación nace desde Ecuador para responder a esa urgencia de manera directa. El 100% de lo recaudado es enviado a nuestras personas de confianza en Venezuela que se encargan de comprar y entregar personalmente la ayuda a los puntos que la solicitan:</p>
         </div>
         <div class="dest">
-          <div class="dest-item"><span class="ic">🧸</span><div><div class="t">Niños sin hogar</div><div class="d">Abrigo, alimento y cuidado para los niños que quedaron huérfanos o sin un lugar donde vivir.</div></div></div>
-          <div class="dest-item"><span class="ic">⚕️</span><div><div class="t">Centros médicos</div><div class="d">Insumos de primeros auxilios para atender a los heridos y colaborar con los centros médicos desabastecidos.</div></div></div>
+          <div class="dest-item"><span class="ic">🧸</span><div class="t">Refugios para niños</div></div>
+          <div class="dest-item"><span class="ic">🏥</span><div class="t">Centros médicos</div></div>
+          <div class="dest-item"><span class="ic">⛑️</span><div class="t">Rescatistas y voluntarios</div></div>
+          <div class="dest-item"><span class="ic">⛺️</span><div class="t">Refugios para familias damnificadas</div></div>
         </div>
         <div class="transp"><span class="ic">📄</span><div class="t"><b>Transparencia total.</b> Iremos publicando las facturas de cada compra y documentando la entrega de cada donativo. Queremos que veas exactamente en qué se convierte tu aporte: cada dólar con su destino y su comprobante.</div></div>
 
@@ -596,25 +658,16 @@
 
       <section class="card" id="instrucciones">
         <h2>Cómo donar</h2>
-        <p class="sub">Transfiere a esta cuenta y tu aporte se suma a la meta. Envíanos tu comprobante para registrarte en la lista</p>
-
-        <div class="acct">
-          <div class="bank-row"><div><div class="k">Banco</div><div class="v" id="b-bank">Banco Guayaquil</div></div>
-            <button class="copy" data-c="b-bank">Copiar</button></div>
-          <div class="bank-row"><div><div class="k">Cuenta de ahorros</div><div class="v" id="b-acc">0043758599</div></div>
-            <button class="copy" data-c="b-acc">Copiar</button></div>
-          <div class="bank-row"><div><div class="k">Nombre</div><div class="v" id="b-name">Katherine Paola Suarez Cadevilla</div></div>
-            <button class="copy" data-c="b-name">Copiar</button></div>
-          <div class="bank-row"><div><div class="k">Cédula (CI)</div><div class="v" id="b-id">0963847017</div></div>
-            <button class="copy" data-c="b-id">Copiar</button></div>
-          <div class="bank-row"><div><div class="k">Código SWIFT (transferencias internacionales)</div><div class="v" id="b-swift">GUAYECEG</div></div>
-            <button class="copy" data-c="b-swift">Copiar</button></div>
-          <div class="bank-row"><div><div class="k">Envía tu comprobante a</div><div class="v" id="b-mail">katherinesuarez7@gmail.com</div></div>
-            <button class="copy" data-c="b-mail">Copiar</button></div>
-        </div>
+        <p class="sub">Es muy fácil y toma menos de un minuto:</p>
+        <ol class="how-steps">
+          <li>Toca <b>"Quiero donar"</b> y verás los datos de la cuenta.</li>
+          <li>Haz tu transferencia o depósito por el monto que desees.</li>
+          <li>Envíanos tu comprobante y aparecerás en la lista de donantes. 💙</li>
+        </ol>
+        <button class="btn btn-primary" id="donateBtn2" style="width:100%;margin-top:6px">Quiero donar</button>
       </section>
 
-      <section class="card">
+      <section class="card" id="sigueCard">
         <h2>Sigue el progreso</h2>
         <p class="sub">Mira qué estamos haciendo con las donaciones:</p>
         <div class="socials">
@@ -636,7 +689,7 @@
   <div id="view-evidencia" class="view" style="display:none">
     <section class="card ev-intro">
       <h2>Registro de todas las compras y donaciones</h2>
-      <p>Cada aporte se convierte en algo concreto, y aquí lo podrás ver. Subimos los comprobantes de cada compra, las fotos de lo que adquirimos y la descripción del centro/hospital/refugio o punto de necesidad donde fueron entregados. Sin intermediarios: tu ayuda, hecha realidad y con pruebas. 💙</p>
+      <p>Cada aporte se convierte en algo concreto, y aquí podrás ver hasta dónde llega tu ayuda.</p>
     </section>
 
     <!-- subir evidencia (solo admins) -->
@@ -756,6 +809,22 @@
   <button class="lb-log lb-log-next" id="lbLogNext" aria-label="Registro siguiente"><span class="chev">›</span><span class="lbl">Registro<br>siguiente</span></button>
 </div>
 
+<!-- EDITOR DE EJECUCIÓN -->
+<div class="modal-overlay" id="execEditor">
+  <div class="modal">
+    <button class="modal-x" id="execClose" aria-label="Cerrar">✕</button>
+    <h2>Ejecución de gastos</h2>
+    <div class="step-h">Áreas en las que se ha gastado</div>
+    <div id="execRows"></div>
+    <button class="add" id="execAddRow" style="margin-top:8px">➕ Agregar área</button>
+    <div class="step-h" style="margin-top:18px">Próximos objetivos</div>
+    <textarea class="upd-input" id="execGoalsInp" rows="4" placeholder="Un objetivo por línea…"></textarea>
+    <p class="ev-hint" style="margin-top:6px">Escribe un objetivo por línea. Puedes usar <b>**negrita**</b>.</p>
+    <button class="btn btn-primary" id="execSave" style="width:100%;margin-top:10px">Guardar</button>
+    <div class="msg" id="execMsg"></div>
+  </div>
+</div>
+
 <!-- EDITOR DE DESCRIPCIÓN -->
 <div class="modal-overlay" id="introEditor">
   <div class="modal">
@@ -809,7 +878,7 @@
   const fdate = ts => new Date(ts).toLocaleDateString("es-EC",{day:"numeric",month:"short",year:"numeric"});
   const fdt = ts => new Date(ts).toLocaleString("es-EC",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
 
-  let donations=[], sortMode="destacadas", freshId=null, isAdmin=false, evidencia=[], adminOpen=false, showDeleted=false, updates=[], albKind=null, albKey=null;
+  let donations=[], sortMode="recientes", freshId=null, isAdmin=false, evidencia=[], adminOpen=false, showDeleted=false, updates=[], albKind=null, albKey=null;
   let ocrToken=0, ocrPromise=null, ocrText=null, ocrAnalyzed=false, curPreviewUrl=null;
 
   const mapRow = r => ({id:r.id,name:r.donor_name,anon:r.is_anonymous,amount:Number(r.amount),date:new Date(r.donated_at).getTime(),confirmed:r.confirmed!==false,source:r.source||"manual",file:r.file_path||null,review:r.review===true,deleted:r.deleted===true,international:r.international===true});
@@ -825,7 +894,7 @@
   let cuRaf;
   function countUp(el,target){cancelAnimationFrame(cuRaf);const start=parseInt(el.dataset.val||"0",10),dur=950,t0=performance.now();(function step(nw){const k=Math.min(1,(nw-t0)/dur),e=1-Math.pow(1-k,3),v=Math.round(start+(target-start)*e);el.textContent=fmt(v);el.dataset.val=v;if(k<1)cuRaf=requestAnimationFrame(step);})(performance.now());}
 
-  function renderBar(){const pub=pubDons(),t=pub.reduce((s,d)=>s+d.amount,0),pct=GOAL>0?Math.min(100,(t/GOAL)*100):0;$("#fill").style.width=pct+"%";$("#track").setAttribute("aria-valuenow",t);countUp($("#raised"),t);$("#pct").textContent=Math.round(pct)+"%";$("#dcount").textContent=pub.length+(pub.length===1?" donación":" donaciones");$("#count2").textContent=pub.length;const fn=$("#featNote");if(pub.length){const top=[...pub].sort((a,b)=>b.amount-a.amount)[0];$("#featName").textContent=(top.anon?"Anónimo":top.name)+" · "+fmt(top.amount);fn.style.display="flex";}else{fn.style.display="none";}}
+  function renderBar(){const pub=pubDons(),t=pub.reduce((s,d)=>s+d.amount,0),pct=GOAL>0?Math.min(100,(t/GOAL)*100):0;$("#fill").style.width=pct+"%";$("#track").setAttribute("aria-valuenow",t);countUp($("#raised"),t);$("#pct").textContent=Math.round(pct)+"%";$("#dcount").textContent=pub.length+(pub.length===1?" donación":" donaciones");$("#count2").textContent=pub.length;const fn=$("#featNote");if(pub.length){const top=[...pub].sort((a,b)=>b.amount-a.amount)[0];$("#featName").textContent=(top.anon?"Anónimo":top.name)+" · "+fmt(top.amount);fn.style.display="flex";}else{fn.style.display="none";}renderExec();}
 
   function sorted(){const a=pubDons();if(sortMode==="recientes")a.sort((x,y)=>y.date-x.date);else if(sortMode==="az")a.sort((x,y)=>(x.name||"anónimo").localeCompare(y.name||"anónimo","es"));else a.sort((x,y)=>y.amount-x.amount);return a;}
 
@@ -1036,7 +1105,7 @@
   /* ===== Descripción editable + Actualizaciones ===== */
   const esc=s=>(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
   const INTRO_T_DEF="Lo que está pasando";
-  const INTRO_B_DEF="El 24 de junio, dos terremotos golpearon Venezuela con apenas segundos de diferencia. En un país que ya venía cargando años de una crisis profunda: hospitales sin insumos, familias sosteniéndose con lo mínimo y una sociedad completamente abandonada por su gobierno, el sismo convirtió la fragilidad en catástrofe. En instantes miles de personas, muchas de ellas niños, se quedaron sin un lugar seguro donde dormir.\n\nEsta campaña responde a esa urgencia de forma **directa y sin intermediarios**. El 100% de lo recaudado se transfiere a personas de confianza en Venezuela, que compran insumos de primera necesidad y los entregan en mano donde más se necesitan:";
+  const INTRO_B_DEF="El 24 de junio dos terremotos golpearon Venezuela con apenas segundos de diferencia. En un país que ya venía cargando años de una crisis profunda; hospitales sin insumos y familias sosteniéndose con lo mínimo, el terremoto convirtió la fragilidad en catástrofe.\n\nEsta recaudación nace desde Ecuador para responder a esa urgencia de manera directa. El 100% de lo recaudado es enviado a nuestras personas de confianza en Venezuela que se encargan de comprar y entregar personalmente la ayuda a los puntos que la solicitan:";
   let introTitle=INTRO_T_DEF, introBody=INTRO_B_DEF;
   const mdInline=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>");
   function renderIntro(){
@@ -1067,7 +1136,77 @@
     if(error){console.error(error);$("#introMsg").textContent="No se pudo guardar.";return;}
     introTitle=t;introBody=b;renderIntro();closeIntro();toast("Descripción actualizada");
   });
-  try{sb.channel("content-rt").on("postgres_changes",{event:"*",schema:"public",table:"site_content"},()=>loadIntro()).subscribe();}catch(e){}
+  try{sb.channel("content-rt").on("postgres_changes",{event:"*",schema:"public",table:"site_content"},()=>{loadIntro();loadExec();}).subscribe();}catch(e){}
+
+  /* ===== Ejecución de gastos (admin manual) ===== */
+  const EXEC_COLORS=["#2F6BED","#F59E0B","#EAB308","#10B981","#8B5CF6","#EC4899","#06B6D4","#EF4444","#14B8A6","#F97316"];
+  const EXEC_REMAIN="#CBD5E1";
+  let gastos=[], objetivos="", execRows=[];
+  function renderExec(){
+    const card=$("#execCard");if(!card)return;
+    const admin=adminOpen&&isAdmin;
+    const raised=total(), spent=gastos.reduce((s,g)=>s+(+g.a||0),0), remain=Math.max(0,raised-spent);
+    const hasContent=gastos.length>0||(objetivos&&objetivos.trim());
+    if(!hasContent&&!admin){card.style.display="none";return;}
+    card.style.display="";
+    $("#execEdit").style.display=admin?"inline-flex":"none";
+    $("#execSpent").textContent=fmt(spent);
+    $("#execRaised").textContent=fmt(raised);
+    const denom=raised>0?raised:(spent>0?spent:1);
+    const segs=gastos.map((g,i)=>{
+      const w=Math.max(0,Math.min(100,(+g.a||0)/denom*100));
+      return `<div class="exec-seg" style="width:${w}%;background:${EXEC_COLORS[i%EXEC_COLORS.length]}" title="${esc(g.n)}: ${fmt(+g.a||0)}"></div>`;
+    });
+    const remPct=raised>0?Math.max(0,Math.min(100,remain/raised*100)):0;
+    const freeLbl=remPct>=16?`<span class="exec-free-lbl">${fmt(remain)} por usar</span>`:"";
+    segs.push(`<div class="exec-free" style="width:${remPct}%">${freeLbl}</div>`);
+    $("#execBar").innerHTML=segs.join("");
+    $("#execLegend").innerHTML=gastos.length?gastos.map((g,i)=>`<div class="exec-leg"><span class="dot" style="background:${EXEC_COLORS[i%EXEC_COLORS.length]}"></span><span class="ln">${esc(g.n)}</span><span class="la">${fmt(+g.a||0)}</span></div>`).join(""):(admin?'<div class="exec-empty">Aún no agregas áreas de gasto. Toca ✏️ Editar.</div>':"");
+    $("#execRemain").innerHTML=`<span class="dot" style="background:${EXEC_REMAIN}"></span><span class="ln">Ya gestionando ayuda</span><span class="la">${fmt(remain)}</span>`;
+    const lines=(objetivos||"").split(/\n/).map(s=>s.trim()).filter(Boolean);
+    $("#execGoals").style.display=(lines.length||admin)?"":"none";
+    $("#execGoalsBody").innerHTML=lines.length?lines.map(l=>`<div class="exec-goal">${mdInline(l)}</div>`).join(""):(admin?'<div class="exec-empty">Escribe los próximos objetivos con ✏️ Editar.</div>':"");
+  }
+  async function loadExec(){
+    try{const {data}=await sb.from("site_content").select("key,value").in("key",["gastos","objetivos"]);
+      (data||[]).forEach(r=>{
+        if(r.key==="gastos"&&r.value){try{gastos=JSON.parse(r.value)||[];}catch(e){gastos=[];}}
+        if(r.key==="objetivos"&&r.value!=null)objetivos=r.value;
+      });
+    }catch(e){console.warn(e);}
+    renderExec();
+  }
+  function renderExecRows(){
+    $("#execRows").innerHTML=execRows.map((r,i)=>`<div class="exec-row"><span class="exec-row-dot" style="background:${EXEC_COLORS[i%EXEC_COLORS.length]}"></span><input class="exec-row-n" data-i="${i}" type="text" placeholder="Área (ej. Medicinas)" value="${esc(r.n)}"><div class="inp money exec-row-amt"><span class="cur">$</span><input class="exec-row-a-inp" data-i="${i}" type="number" min="0" step="1" placeholder="0" value="${r.a===""||r.a==null?"":r.a}"></div><button class="exec-row-del" data-i="${i}" title="Quitar">✕</button></div>`).join("");
+  }
+  function openExecEditor(){
+    execRows=gastos.map(g=>({n:g.n||"",a:(g.a==null?"":g.a)}));
+    if(!execRows.length)execRows.push({n:"",a:""});
+    $("#execGoalsInp").value=objetivos||"";$("#execMsg").textContent="";
+    renderExecRows();
+    $("#execEditor").classList.add("show");document.body.style.overflow="hidden";
+  }
+  function closeExecEditor(){$("#execEditor").classList.remove("show");document.body.style.overflow="";}
+  $("#execEdit").addEventListener("click",openExecEditor);
+  $("#execClose").addEventListener("click",closeExecEditor);
+  $("#execEditor").addEventListener("click",e=>{if(e.target.id==="execEditor")closeExecEditor();});
+  $("#execAddRow").addEventListener("click",()=>{execRows.push({n:"",a:""});renderExecRows();});
+  $("#execRows").addEventListener("input",e=>{
+    const i=+e.target.dataset.i;if(isNaN(i)||!execRows[i])return;
+    if(e.target.classList.contains("exec-row-n"))execRows[i].n=e.target.value;
+    else if(e.target.classList.contains("exec-row-a-inp"))execRows[i].a=e.target.value;
+  });
+  $("#execRows").addEventListener("click",e=>{const d=e.target.closest(".exec-row-del");if(!d)return;execRows.splice(+d.dataset.i,1);renderExecRows();});
+  $("#execSave").addEventListener("click",async()=>{
+    const arr=execRows.map(r=>({n:(r.n||"").trim(),a:Math.max(0,Number(r.a)||0)})).filter(r=>r.n!=="");
+    const goals=$("#execGoalsInp").value.trim();
+    $("#execSave").disabled=true;
+    const {error}=await sb.from("site_content").upsert([{key:"gastos",value:JSON.stringify(arr)},{key:"objetivos",value:goals}]);
+    $("#execSave").disabled=false;
+    if(error){console.error(error);$("#execMsg").textContent="No se pudo guardar.";return;}
+    gastos=arr;objetivos=goals;renderExec();closeExecEditor();toast("Ejecución actualizada");
+  });
+
 
   async function loadUpdates(){
     const {data,error}=await sb.from("updates").select("*").order("created_at",{ascending:false});
@@ -1248,6 +1387,7 @@
   function openModal(){$("#donateModal").classList.add("show");$("#donateStep").style.display="block";$("#thanksStep").style.display="none";const m=$("#compMsg");m.textContent="";m.classList.remove("err");document.body.style.overflow="hidden";}
   function closeModal(){$("#donateModal").classList.remove("show");document.body.style.overflow="";$("#compFile").value="";$("#compName").value="";$("#compName").disabled=false;$("#compAmount").value="";$("#compAnon").checked=false;$("#compIntl").checked=false;$("#fileLabel").textContent="Elegir comprobante (foto o PDF)";ocrText=null;ocrAnalyzed=false;ocrPromise=null;if(curPreviewUrl){URL.revokeObjectURL(curPreviewUrl);curPreviewUrl=null;}setOcrBox("",null);}
   $("#donateBtn").addEventListener("click",openModal);
+  $("#donateBtn2").addEventListener("click",openModal);
   $("#modalClose").addEventListener("click",closeModal);
   $("#thanksClose").addEventListener("click",closeModal);
   $("#donateModal").addEventListener("click",e=>{if(e.target.id==="donateModal")closeModal();});
@@ -1347,7 +1487,7 @@
     $("#confirmCard").style.display=tools?"block":"none";
     $("#updAdd").style.display=tools?"flex":"none";
     if(tools)$("#dDate").value=new Date().toISOString().slice(0,10);
-    renderList();renderEvidencia();renderConfirm();renderUpdates();renderIntro();
+    renderList();renderEvidencia();renderConfirm();renderUpdates();renderIntro();renderExec();
   }
 
   sb.auth.onAuthStateChange((_e,session)=>{const email=session?.user?.email||"";isAdmin=ADMIN_EMAILS.includes(email);if(isAdmin)$("#who").textContent=email;setAdminUI();});
@@ -1427,6 +1567,7 @@
     await loadEvidencia();
     await loadUpdates();
     await loadIntro();
+    await loadExec();
   })();
 </script>
 </body>
