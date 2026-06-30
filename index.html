@@ -268,6 +268,7 @@
     .grid{grid-template-columns:1fr 360px;align-items:start;}
     .rail{display:flex;flex-direction:column;gap:18px;grid-column:2;grid-row:1;}
     .main{display:flex;flex-direction:column;gap:18px;grid-column:1;grid-row:1;}
+    .list{max-height:230px;}
   }
 
   /* ===== menú / vistas ===== */
@@ -549,7 +550,6 @@
         <div class="seg" role="tablist">
           <button data-sort="destacadas">Destacadas</button>
           <button class="active" data-sort="recientes">Recientes</button>
-          <button data-sort="az">A–Z</button>
         </div>
         <div class="list-shell">
           <div class="list" id="list"></div>
@@ -642,18 +642,6 @@
           <div class="dest-item"><span class="ic">⛺️</span><div class="t">Refugios para familias damnificadas</div></div>
         </div>
         <div class="transp"><span class="ic">📄</span><div class="t"><b>Transparencia total.</b> Iremos publicando las facturas de cada compra y documentando la entrega de cada donativo. Queremos que veas exactamente en qué se convierte tu aporte: cada dólar con su destino y su comprobante.</div></div>
-
-        <div class="upd-sec" id="updSec" style="display:none">
-          <div class="upd-sec-head"><h3>📣 Actualizaciones</h3></div>
-          <div id="updAdd" style="display:none">
-            <textarea class="upd-input" id="updText" rows="2" placeholder="Escribe una actualización…"></textarea>
-            <label class="upd-dt-lbl">Fecha y hora (opcional, por defecto ahora)</label>
-            <input type="datetime-local" class="upd-dt" id="updDate" />
-            <button class="add" id="updBtn">Publicar actualización</button>
-          </div>
-          <div class="upd-scroll collapsed" id="updScroll"><div id="updList"></div></div>
-          <button class="upd-more" id="updMore" style="display:none">Leer más ▾</button>
-        </div>
       </section>
 
       <section class="card" id="instrucciones">
@@ -662,7 +650,7 @@
         <ol class="how-steps">
           <li>Toca <b>"Quiero donar"</b> y verás los datos de la cuenta.</li>
           <li>Haz tu transferencia o depósito por el monto que desees.</li>
-          <li>Envíanos tu comprobante y aparecerás en la lista de donantes. 💙</li>
+          <li>Sube tu comprobante y aparecerás en la lista de donantes. 💙</li>
         </ol>
         <button class="btn btn-primary" id="donateBtn2" style="width:100%;margin-top:6px">Quiero donar</button>
       </section>
@@ -714,6 +702,18 @@
     <section class="card ev-section" style="margin-top:18px">
       <div class="ev-shead"><h3>📷 Fotos de facturas, compras y entregas en Venezuela</h3><span class="count" id="evCount">0</span></div>
       <div class="ev-grid" id="evGrid"></div>
+    </section>
+
+    <section class="card" id="updSec" style="display:none;margin-top:18px">
+      <div class="upd-sec-head"><h3>📣 Actualizaciones</h3></div>
+      <div id="updAdd" style="display:none">
+        <textarea class="upd-input" id="updText" rows="2" placeholder="Escribe una actualización…"></textarea>
+        <label class="upd-dt-lbl">Fecha y hora (opcional, por defecto ahora)</label>
+        <input type="datetime-local" class="upd-dt" id="updDate" />
+        <button class="add" id="updBtn">Publicar actualización</button>
+      </div>
+      <div class="upd-scroll collapsed" id="updScroll"><div id="updList"></div></div>
+      <button class="upd-more" id="updMore" style="display:none">Leer más ▾</button>
     </section>
 
     <footer class="page-foot">
@@ -896,7 +896,7 @@
 
   function renderBar(){const pub=pubDons(),t=pub.reduce((s,d)=>s+d.amount,0),pct=GOAL>0?Math.min(100,(t/GOAL)*100):0;$("#fill").style.width=pct+"%";$("#track").setAttribute("aria-valuenow",t);countUp($("#raised"),t);$("#pct").textContent=Math.round(pct)+"%";$("#dcount").textContent=pub.length+(pub.length===1?" donación":" donaciones");$("#count2").textContent=pub.length;const fn=$("#featNote");if(pub.length){const top=[...pub].sort((a,b)=>b.amount-a.amount)[0];$("#featName").textContent=(top.anon?"Anónimo":top.name)+" · "+fmt(top.amount);fn.style.display="flex";}else{fn.style.display="none";}renderExec();}
 
-  function sorted(){const a=pubDons();if(sortMode==="recientes")a.sort((x,y)=>y.date-x.date);else if(sortMode==="az")a.sort((x,y)=>(x.name||"anónimo").localeCompare(y.name||"anónimo","es"));else a.sort((x,y)=>y.amount-x.amount);return a;}
+  function sorted(){const a=pubDons();if(sortMode==="recientes")a.sort((x,y)=>y.date-x.date);else a.sort((x,y)=>y.amount-x.amount);return a;}
 
   function renderList(){
     const pub=pubDons();
