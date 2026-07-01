@@ -685,6 +685,25 @@
   <!-- ===================== VISTA: ADMIN (solo tras iniciar sesión) ===================== -->
   <div id="view-admin" class="view" style="display:none">
     <div class="admin-stack">
+        <!-- Subir evidencia / facturas -->
+      <section class="card" id="evUploadCard" style="display:none">
+        <div class="step-h">Subir evidencia (admins)</div>
+        <div class="field-row">
+          <select class="inp" id="evKind">
+            <option value="factura">🧾 Factura de compra</option>
+            <option value="foto">📷 Foto de entrega</option>
+          </select>
+          <input class="inp full" id="evCaption" type="text" placeholder="Descripción (ej: compra de pañales y leche)" />
+        </div>
+        <div class="field-row">
+          <label class="filebtn"><span id="evFileLabel">Elegir archivos (foto o PDF)</span>
+            <input type="file" id="evFile" accept="image/*,application/pdf" multiple /></label>
+          <button class="add" id="evUploadBtn">Subir</button>
+        </div>
+        <div class="ev-hint">💡 Puedes elegir <b>varias fotos a la vez</b>: se agruparán como un álbum de la misma compra/entrega, con esta misma descripción.</div>
+        <div class="msg" id="evMsg"></div>
+      </section>
+
       <section class="card admin show" id="adminPanel">
         <!-- LOGIN (cuando no hay sesión de admin) -->
         <div id="loginView">
@@ -746,25 +765,6 @@
         <div id="confirmList"></div>
         <button class="linklike" id="showDelBtn" style="display:none;margin-top:12px"></button>
       </section>
-
-      <!-- Subir evidencia / facturas -->
-    <section class="card" id="evUploadCard" style="display:none">
-      <div class="step-h">Subir evidencia (admins)</div>
-      <div class="field-row">
-        <select class="inp" id="evKind">
-          <option value="factura">🧾 Factura de compra</option>
-          <option value="foto">📷 Foto de entrega</option>
-        </select>
-        <input class="inp full" id="evCaption" type="text" placeholder="Descripción (ej: compra de pañales y leche)" />
-      </div>
-      <div class="field-row">
-        <label class="filebtn"><span id="evFileLabel">Elegir archivos (foto o PDF)</span>
-          <input type="file" id="evFile" accept="image/*,application/pdf" multiple /></label>
-        <button class="add" id="evUploadBtn">Subir</button>
-      </div>
-      <div class="ev-hint">💡 Puedes elegir <b>varias fotos a la vez</b>: se agruparán como un álbum de la misma compra/entrega, con esta misma descripción.</div>
-      <div class="msg" id="evMsg"></div>
-    </section>
     </div>
   </div>
 
@@ -952,7 +952,7 @@
       const nm=d.anon?"Anónimo":(d.name||"Anónimo");
       const av=d.anon?`<div class="av" style="background:#AAB2AC">${heartSVG}</div>`:`<div class="av" style="background:${colorFor(nm)}">${initials(nm)}</div>`;
       let badges="";if(d.id===topId)badges+='<span class="badge top">⭐ Destacada</span>';if(d.id===recentId)badges+='<span class="badge recent">Más reciente</span>';
-      const del=isAdmin?`<button class="del" data-id="${d.id}" title="Borrar">✕</button>`:"";
+      const del=(adminOpen&&isAdmin)?`<button class="del" data-id="${d.id}" title="Borrar">✕</button>`:"";
       return `<div class="donor${d.id===freshId?' fresh':''}">${av}<div class="dinfo"><div class="dname">${nm} ${badges}</div><div class="dmeta">${rel(d.date)}</div></div><div class="damt">${fmt(d.amount)}</div>${del}</div>`;
     }).join("");
     freshId=null;
@@ -991,7 +991,7 @@
   function stLongDay(key){return new Date(key+"T12:00:00").toLocaleDateString("es-EC",{day:"numeric",month:"short"});}
   function stDM(key){const p=key.split("-");return p[2]+"/"+p[1];}
   function renderStats(){
-    if(!isAdmin)return;
+    if(!isAdmin||!adminOpen)return;
     const s=computeStats();
     const rng=$("#statRange");if(rng)rng.textContent=s.activeDays?(s.activeDays+(s.activeDays===1?" día":" días")):"";
     const pctIntl=s.n?Math.round(s.intl/s.n*100):0;
@@ -1077,7 +1077,7 @@
   }
   function evCover(e){return isImg(e.file_path)?`<img src="${evUrl(e.file_path)}" alt="" loading="lazy">`:`<div class="ev-doc"><span class="ico">🧾</span><span><span class="dt">Documento</span><span class="dd">PDF</span></span></div>`;}
   function renderEvidencia(){
-    const groups=allGroups(), admin=isAdmin;
+    const groups=allGroups(), admin=adminOpen&&isAdmin;
     $("#evCount").textContent=groups.length;
     const card=(g)=>{
       const defCap=g.kind==="factura"?"Factura de compra":"Entrega de donativos";
@@ -1217,7 +1217,7 @@
   function renderIntro(){
     $("#introTitle").textContent=introTitle;
     $("#introBody").innerHTML=introBody.split(/\n\s*\n/).map(p=>`<p>${mdInline(p)}</p>`).join("");
-    $("#introEdit").style.display=isAdmin?"inline-flex":"none";
+    $("#introEdit").style.display=(adminOpen&&isAdmin)?"inline-flex":"none";
   }
   async function loadIntro(){
     try{const {data}=await sb.from("site_content").select("key,value").in("key",["intro_title","intro_body"]);
@@ -1250,7 +1250,7 @@
   let gastos=[], objetivos="", execRows=[];
   function renderExec(){
     const card=$("#execCard");if(!card)return;
-    const admin=isAdmin;
+    const admin=adminOpen&&isAdmin;
     const raised=total(), spent=gastos.reduce((s,g)=>s+(+g.a||0),0), remain=Math.max(0,raised-spent);
     const hasContent=gastos.length>0||(objetivos&&objetivos.trim());
     if(!hasContent&&!admin){card.style.display="none";return;}
@@ -1322,7 +1322,7 @@
   let updEditId=null;
   const toLocalInput=ts=>{const d=new Date(ts),p=n=>String(n).padStart(2,"0");return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"T"+p(d.getHours())+":"+p(d.getMinutes());};
   function renderUpdates(){
-    const admin=isAdmin, sec=$("#updSec"), scroll=$("#updScroll"), more=$("#updMore");
+    const admin=adminOpen&&isAdmin, sec=$("#updSec"), scroll=$("#updScroll"), more=$("#updMore");
     if(!updates.length&&!admin){sec.style.display="none";return;}
     sec.style.display="block";
     if(!updates.length){
@@ -1358,7 +1358,7 @@
     $("#updText").value="";$("#updDate").value="";toast("Actualización publicada");
   });
   $("#updList").addEventListener("click",async e=>{
-    if(!isAdmin)return;
+    if(!isAdmin||!adminOpen)return;
     const ed=e.target.closest(".upd-edit");
     if(ed){updEditId=ed.dataset.id;renderUpdates();const t=$("#updEditText");if(t){t.focus();t.setSelectionRange(t.value.length,t.value.length);}return;}
     const save=e.target.closest('[data-act="save"]');
@@ -1382,7 +1382,7 @@
 
   /* ===== Confirmar transacciones (admin) ===== */
   function renderConfirm(){
-    if(!isAdmin)return;
+    if(!isAdmin||!adminOpen)return;
     const all=[...donations].sort((a,b)=>b.date-a.date);
     const active=all.filter(d=>!d.deleted), del=all.filter(d=>d.deleted);
     $("#pendCount").textContent=active.filter(d=>!d.confirmed).length+" por confirmar";
@@ -1569,30 +1569,37 @@
 
   /* ===== Admin ===== */
   const at=$("#adminToggle");
+  let currentView="donar";
   function updateAdminBtn(){
     at.classList.toggle("on",adminOpen);
     at.setAttribute("aria-pressed",adminOpen);
-    at.textContent=adminOpen?"✕ Cerrar":(isAdmin?"⚙️ Panel admin":"Modo admin");
+    at.textContent = !adminOpen ? (isAdmin?"admin":"Modo admin")
+                   : (currentView==="admin" ? "✕ Salir de admin" : "⚙️ Volver al panel");
   }
   function showView(v){
+    currentView=v;
     $("#view-donar").style.display=v==="donar"?"block":"none";
     $("#view-evidencia").style.display=v==="evidencia"?"block":"none";
     $("#view-admin").style.display=v==="admin"?"block":"none";
     $$(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view===v));
-    adminOpen=(v==="admin");
     updateAdminBtn();
     window.scrollTo({top:0,behavior:"smooth"});
   }
-  at.addEventListener("click",()=>{ showView(adminOpen?"donar":"admin"); });
+  at.addEventListener("click",()=>{
+    if(!adminOpen){ adminOpen=true; showView("admin"); setAdminUI(); }        // entrar al modo admin
+    else if(currentView!=="admin"){ showView("admin"); }                     // volver al panel (sigue en modo admin)
+    else { adminOpen=false; showView("donar"); setAdminUI(); }               // salir del modo admin
+  });
 
   function setAdminUI(){
     $("#loginView").style.display=isAdmin?"none":"block";
     $("#addView").style.display=isAdmin?"block":"none";
-    const tools=isAdmin;
+    const tools=isAdmin;               // tarjetas del panel admin (dentro de la vista admin)
+    const editing=adminOpen&&isAdmin;  // controles de edición sobre las pestañas públicas
     $("#evUploadCard").style.display=tools?"block":"none";
     $("#confirmCard").style.display=tools?"block":"none";
     $("#statsCard").style.display=tools?"block":"none";
-    $("#updAdd").style.display=tools?"flex":"none";
+    $("#updAdd").style.display=editing?"flex":"none";
     if(tools)$("#dDate").value=new Date().toISOString().slice(0,10);
     updateAdminBtn();
     renderList();renderEvidencia();renderConfirm();renderStats();renderUpdates();renderIntro();renderExec();
@@ -1626,7 +1633,7 @@
     $("#dName").value="";$("#dAmount").value="";$("#dAnon").checked=false;$("#dIntl").checked=false;$("#dName").disabled=false;toast("Donación registrada");
   });
 
-  $("#list").addEventListener("click",async e=>{const btn=e.target.closest(".del");if(!btn||!isAdmin)return;if(!confirm("¿Ocultar esta donación de la lista pública?\n\nNo se borra: queda guardada y la puedes restaurar desde «Confirmar transacciones»."))return;const {error}=await sb.from("donations").update({deleted:true}).eq("id",btn.dataset.id);if(error){console.error(error);toast("No se pudo ocultar.");}else{const d=donations.find(x=>x.id===btn.dataset.id);if(d)d.deleted=true;render();toast("Donación ocultada");}});
+  $("#list").addEventListener("click",async e=>{const btn=e.target.closest(".del");if(!btn||!isAdmin||!adminOpen)return;if(!confirm("¿Ocultar esta donación de la lista pública?\n\nNo se borra: queda guardada y la puedes restaurar desde «Confirmar transacciones»."))return;const {error}=await sb.from("donations").update({deleted:true}).eq("id",btn.dataset.id);if(error){console.error(error);toast("No se pudo ocultar.");}else{const d=donations.find(x=>x.id===btn.dataset.id);if(d)d.deleted=true;render();toast("Donación ocultada");}});
 
   /* ===== Evidencia: subir (admin) + borrar ===== */
   function evUuid(){try{if(crypto&&crypto.randomUUID)return crypto.randomUUID();}catch(e){}return "g-"+Date.now()+"-"+Math.random().toString(36).slice(2);}
@@ -1654,7 +1661,7 @@
     loadEvidencia();
   });
   document.addEventListener("click",async e=>{
-    const del=e.target.closest(".ev-del");if(!del||!isAdmin)return;
+    const del=e.target.closest(".ev-del");if(!del||!isAdmin||!adminOpen)return;
     const g=evGroups(del.dataset.kind).find(x=>x.key===String(del.dataset.group));if(!g)return;
     if(!confirm(g.items.length>1?`¿Borrar este álbum de ${g.items.length} archivos?`:"¿Borrar esta evidencia?"))return;
     await sb.storage.from("evidencia").remove(g.items.map(i=>i.file_path)).catch(()=>{});
